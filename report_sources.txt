@@ -1,0 +1,835 @@
+==== TEMPLATE ====
+A SPATIO -TEMPORAL  DEEP  LEARNING  APPROACH 
+FOR DEEPFAKE DETECTION  
+ 
+PHASE  I REPORT  
+ 
+Submitted  by 
+V SHARMILA  
+Register  No: 953424405004  
+ 
+ 
+in partial  fulfilment  for the award  of the degree  of 
+MASTER  OF ENGINEERING 
+IN 
+COMPUTER  SCIENCE  AND  ENGINEERING  
+ 
+ 
+V V COLLEGE  OF ENGINEERING  
+ 
+DEPARTMENT  OF COMPUTER  SCIENCE  AND 
+ENGINEERING  
+ 
+ANNA  UNIVERSITY  : CHENNAI  600 025 
+ 
+NOVEMBER  2025  
+
+BONAFIDE  CERTIFICATE  
+ 
+Certified  that this Report  titled  “A SPATIO -TEMPORAL  DEEP 
+LEARNING  APPROACH  FOR  DEEPFAKE  DETECTION”  is the Bonafide  
+work of Ms. V SHARMILA (Register No. 953424405004) who carried out the 
+project  work  under  my supervision.  Certified  further  that to the best of my knowledge 
+the work  reported  here in does not form  part of any other  thesis  or dissertation  on the 
+basis  of which  a degree  or award  was conferred  on an earlier  occasion  on this or any 
+other candidate.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Signature  of the HOD   
+Dr.R. Jensi M.E., Ph.D.,  
+HEAD  OF THE  DEPARTMENT  
+Computer  Science  and 
+Engineering,  
+V V College of Engineering,  
+Tisaiyanvilai -628656. Signature  of the Supervisor   
+MS. D. Merlin Gethsy M.E.,  
+SUPERVISOR, AP/CSE  
+Computer  Science  and 
+Engineering,  
+V V College of Engineering, 
+Tisaiyanvilai -628 656.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Submitted  for phase -I project  and viva-voce  examination  held on………………  
+ 
+ 
+ 
+ 
+ 
+Internal  Examiner  External  Examiner  
+
+==== FORENSICS ====
+AltFreezing for More General Video Face Forgery Detection
+Zhendong Wang1,*Jianmin Bao2,*Wengang Zhou1,3,†Weilun Wang1Houqiang Li1,3,†
+1CAS Key Laboratory of GIPAS, EEIS Department, University of Science and Technology of China
+2Microsoft Research Asia
+3Institute of Artificial Intelligence, Hefei Comprehensive National Science Center
+{zhendongwang,wwlustc}@mail.ustc.edu.cn
+jianbao@microsoft.com, {zhwg,lihq}@ustc.edu.cn
+Abstract
+Existing face forgery detection models try to discriminate
+fake images by detecting only spatial artifacts ( e.g., gener-
+ative artifacts, blending) or mainly temporal artifacts ( e.g.,
+flickering, discontinuity). They may experience significant
+performance degradation when facing out-domain artifacts.
+In this paper, we propose to capture both spatial and tempo-
+ral artifacts in one model for face forgery detection. A simple
+idea is to leverage a spatiotemporal model (3D ConvNet).
+However, we find that it may easily rely on one type of arti-
+fact and ignore the other. To address this issue, we present a
+novel training strategy called AltFreezing for more general
+face forgery detection. The AltFreezing aims to encourage
+the model to detect both spatial and temporal artifacts. It
+divides the weights of a spatiotemporal network into two
+groups: spatial-related and temporal-related. Then the two
+groups of weights are alternately frozen during the training
+process so that the model can learn spatial and temporal
+features to distinguish real or fake videos. Furthermore, we
+introduce various video-level data augmentation methods to
+improve the generalization capability of the forgery detec-
+tion model. Extensive experiments show that our framework
+outperforms existing methods in terms of generalization to
+unseen manipulations and datasets.
+1. Introduction
+With the recent rapid development of face generation
+and manipulation techniques [30, 31, 45 –49, 56], it has be-
+come very easy to modify and manipulate the identities or
+attributes given a face video. This brings many important
+and impressive applications for movie-making, funny video
+generation, and so on. However, these techniques can also be
+abused for malicious purposes, creating serious crisis of trust
+*Equal contribution.
+†Corresponding authors.
+Temporal conv
+Spatial conv
+!+
+Temporal conv
+!
+Spatial conv+Figure 1. Illustration of AltFreezing training strategy in a build-
+ing block of the spatiotemporal network. The convolutional ker-
+nels of the spatiotemporal network are divided into two groups:
+temporal-based andspatial-based . Two groups of weights are
+alternately frozen during training. With the help of the alternate
+freezing ( AltFreezing ) strategy, our model can capture both spatial
+and temporal artifacts to distinguish between fake and real videos.
+and security in our society. Therefore, how to detect video
+face forgeries has become a hot research topic recently.
+To date, one successful line of research [10, 32, 34, 39,
+42, 44, 50] tries to discriminate fake images by detecting
+“spatial” artifacts in the generated images ( e.g., checkboard,
+unnaturalness, and characteristic artifacts underlying the
+generative model). While these methods achieve impressive
+results in searching spatial-related artifacts, they ignore the
+temporal coherence of a video and fail to capture “temporal”
+artifacts like flicking and discontinuity in the video face
+forgeries. Some recent works [25,43,54] notice this issue and
+try to address it by leveraging temporal clues. Although they
+achieve encouraging results in detecting unnatural artifacts
+at the temporal level, the resulting models are not sufficiently
+capable of finding spatial-related artifacts.
+In this paper, we attempt to capture both spatial and tem-
+poral artifacts for general video face forgery detection. Gen-
+erally, a well-trained spatiotemporal network (3D ConvNet)
+has the capability of searching both spatial and temporal
+artifacts. However, we find that naïve training may cause
+it to easily rely on spatial artifacts while ignoring temporal
+artifacts to make a decision, causing a poor generalization
+This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.
+Except for this watermark, it is identical to the accepted version;
+the final published version of the proceedings is available on IEEE Xplore.
+4129
+
+
+capability. This is because spatial artifacts are usually more
+obvious than temporal incoherence, naïvely optimizing a
+3D convolutional network makes it easily rely on spatial
+artifacts.
+So the question is how to enable the spatiotemporal net-
+work to capture both spatial and temporal artifacts. To this
+end, we propose a novel training strategy called AltFreez-
+ing. As shown in Fig. 1, the key idea is to alternately freeze
+spatial- and temporal-related weights during training. Specif-
+ically, a spatiotemporal network [9] is built upon 3D res-
+blocks, which consist of spatial convolution with kernel size
+as1×Kh×Kwand temporal convolution with kernel size
+asKt×1×1. These spatial and temporal convolutional ker-
+nels are responsible for capturing spatial- and temporal-level
+features, respectively. Our AltFreezing strategy encourages
+the two groups of weights to be updated alternately so that
+both spatial and temporal artifacts can be conquered.
+Furthermore, we propose a set of video-level fake video
+argumentation methods for generating fake videos for train-
+ing. These methods could be divided into two groups. The
+first is fake clips that only involve temporal artifacts wherein
+we just randomly drop and repeat frames for real clips. The
+second is clips with only spatial artifacts that are obtained
+by blending a region from one real clip to another real clip.
+These augmentation methods are the first to take the tempo-
+ral dimension into consideration and generate spatial-only
+and temporal-only fake videos. With these augmentations,
+the spatiotemporal model is further encouraged to capture
+both spatial and temporal artifacts.
+Equipped with the above-mentioned two techniques, we
+achieve state-of-the-art performance in various challenging
+face forgery detection scenarios, including generalization
+capability to unseen forgeries, and robustness to various
+perturbations. We also provide a comprehensive analysis
+of our method to verify the effectiveness of our proposed
+framework.
+Our main contributions are three-fold as follows.
+•We propose to explore both spatial and temporal arti-
+facts for video face forgery detection. To achieve this, a
+novel training strategy called AltFreezing is proposed.
+•We introduce video-level fake data augmentation meth-
+ods to encourage the model to capture a more general
+representation of different types of forgeries.
+•Extensive experiments on five benchmark datasets in-
+cluding both cross-manipulation and cross-dataset eval-
+uations demonstrate that the proposed method sets new
+state-of-the-art performance.
+2. Related Work
+In the past few years, face forgery detection has been an
+emerging research area with the fast development of genera-tive models and manipulation techniques. In this section, we
+briefly revisit the development of face forgery detection.
+2.1. Image Face Forgery Detection
+Earlier face forgery detection methods [4, 8, 10, 22, 26, 41,
+50] mainly focus on spatial artifacts of manipulated images,
+and directly train a binary classifier based on CNN or MLP
+as the detector. Later Rossler et al. [42] suggest that an
+unconstrained Xception [11] network can achieve an impres-
+sive performance. some works pay more attention to special
+types of artifacts, such as frequency [28,29,37,40], blending
+artifacts [20, 32, 44], resolution difference [35], and so on.
+Moreover, there are some works [7,14,24,27,39,51] aiming
+to localize the forged regions and make a decision based on
+the predicted regions. A more recent work ICT [17, 18] tries
+to leverage identity information for detecting face forgeries.
+2.2. Video Face Forgery Detection
+Recent works [6, 13, 16, 25, 33, 38, 43] start to take tempo-
+ral cues into consideration for face forgery detection. CNN-
+GRU [43] employs a GRU module after CNN to introduce
+the temporal information. In [6,16], a 3D ConvNet is directly
+trained to detect spatial and temporal artifacts. Some stud-
+ies introduce prior knowledge to benefit video face forgery
+detection, such as eye blinking [33], lip motion [25], and
+emotion [38]. Amerini et al . [6] suggest that predicting
+optical flow between frames helps deepfake detection.
+There are A part of works [19, 21, 54] which tend to fo-
+cus on representation learning. STIL [21] considers both
+the spatial and temporal inconsistency and designs a spatio-
+temporal inconsistency Learning framework for deepfake
+video detection. RealForensics [19] introduces audio infor-
+mation and leverages self-supervised learning for represen-
+tation learning. A recent work FTCN [54] explores directly
+training a fully temporal 3D ConvNets with an attached
+temporal Transformer. However, detecting without spatial
+information may harm the generalization capability. In this
+work, we aim to bring both spatial and temporal features for
+more general face forgery detection.
+2.3. Generalization to Unseen Manipulations
+With the rapid development of face generation and ma-
+nipulation techniques, many previous face forgery detection
+methods [10, 42, 50] cannot well address unseen manipula-
+tions and datasets. Recent studies have noticed this chal-
+lenge and focus on improving the generalization capabil-
+ity of the model. FWA [35] targets the artifacts in affine
+face warping as the distinctive feature to detect the forgery.
+Face X-ray [32] proposes that detecting blending bound-
+aries in images can make a general detector, which sets up
+a new paradigm of synthesizing images for generalizable
+face forgery detection. SBI [44] inherits the detecting bound-
+aries thought proposed by Face X-ray [32] and suggests that
+4130
+
+
+==== EYEBLINK ====
+Exposing DeepFake Videos By Detecting Face Warping Artifacts
+Yuezun Li, Siwei Lyu
+Computer Science Department
+University at Albany, State University of New York, USA
+Abstract
+In this work, we describe a new deep learning based
+method that can effectively distinguish AI-generated fake
+videos (referred to as DeepFake videos hereafter) from real
+videos. Our method is based on the observations that cur-
+rent DeepFake algorithm can only generate images of lim-
+ited resolutions, which need to be further warped to match
+the original faces in the source video. Such transforms leave
+distinctive artifacts in the resulting DeepFake videos, and
+we show that they can be effectively captured by convo-
+lutional neural networks (CNNs). Compared to previous
+methods which use a large amount of real and DeepFake
+generated images to train CNN classiﬁer, our method does
+not need DeepFake generated images as negative training
+examples since we target the artifacts in afﬁne face warp-
+ing as the distinctive feature to distinguish real and fake
+images. The advantages of our method are two-fold: (1)
+Such artifacts can be simulated directly using simple image
+processing operations on a image to make it as negative ex-
+ample. Since training a DeepFake model to generate nega-
+tive examples is time-consuming and resource-demanding,
+our method saves a plenty of time and resources in training
+data collection; (2) Since such artifacts are general existed
+in DeepFake videos from different sources, our method is
+more robust compared to others. Our method is evaluated
+on two sets of DeepFake video datasets for its effectiveness
+in practice.
+1. Introduction
+The increasing sophistication of mobile camera technol-
+ogy and the ever-growing reach of social media and media
+sharing portals have made the creation and propagation of
+digital videos more convenient than ever before. Until re-
+cently, the number of fake videos and their degrees of re-
+alism have been limited by the lack of sophisticated edit-
+ing tools, the high demand on domain expertise, and the
+complex and time-consuming process involved. However,
+the time of fabrication and manipulation of videos has de-
+creased signiﬁcantly in recent years, thanks to the acces-sibility to large-volume training data and high-throughput
+computing power, but more to the growth of machine learn-
+ing and computer vision techniques that eliminate the need
+for manual editing steps.
+In particular, a new vein of AI-based fake video gen-
+eration methods known as DeepFake has attracted a lot
+of attention recently. It takes as input a video of a spe-
+ciﬁc individual (’target’), and outputs another video with
+the target’s faces replaced with those of another individ-
+ual (’source’). The backbone of DeepFake are deep neu-
+ral networks trained on face images to automatically map
+the facial expressions of the source to the target. With
+proper post-processing, the resulting videos can achieve a
+high level of realism.
+In this paper, we describe a new deep learning based
+method that can effectively distinguish DeepFake videos
+from the real ones. Our method is based on a property of
+the DeepFake videos: due to limitation of computation re-
+sources and production time, the DeepFake algorithm can
+only synthesize face images of a ﬁxed size, and they must
+undergo an afﬁne warping to match the conﬁguration of the
+source’s face. This warping leaves distinct artifacts due to
+the resolution inconsistency between warped face area and
+surrounding context. As such, this artifacts can be used to
+detect DeepFake Videos.
+Our method detects such artifacts by comparing the gen-
+erated face areas and their surrounding regions with a ded-
+icated Convolutional Neural Network (CNN) model. To
+train the CNN model, we simplify the process by simu-
+lating the resolution inconsistency in afﬁne face warpings
+directly. Speciﬁcally, we ﬁrst detect faces and then extract
+landmarks to compute the transform matrices to align the
+faces to a standard conﬁguration. We apply Gaussian blur-
+ring to the aligned face, which is then afﬁne warped back to
+original image using the inverse of the estimated transfor-
+mation matrix. In order to simulate more different resolu-
+tion cases of afﬁne warped face, we align faces into multiple
+scales to increase the data diversity (see Figure 2). Com-
+pared to training a DeepFake model to generate fake im-
+ages as negative data in [ 1,10], which is time-consuming
+and resource-demanding ( ∼72hours on a NVIDIA GTX
+1
+46
+
+
+GPU), our method creates negative data only using simple
+image processing operations which therefore saves a plenty
+of time and computing resources. Moreover, other meth-
+ods may be over-ﬁt to a speciﬁc distribution of DeepFake
+videos, our method is more robust since such artifacts are
+general in different sources of DeepFake videos. Based
+on our collected real face images from Internet and corre-
+sponding created negative data, we train four CNN mod-
+els: VGG16 [ 31], ResNet50, ResNet101 and ResNet152
+[11]. We demonstrate the effectiveness of our method on
+a DeepFake dataset from [ 20] and test several fake videos
+onYouTube .
+2. Related works
+AI-based Video Synthesis Algorithms The new genera-
+tion of AI-based video synthesis algorithms are based on
+the recent developments in new deep learning models, es-
+pecially the generative adversarial networks (GANs) [ 9]. A
+GAN model consists of two deep neural networks trained in
+tandem. The generator network aims to produce images that
+cannot be distinguished from the training real images, while
+the discriminator network aims to tell them apart. When
+training completes, the generator is used to synthesize im-
+ages with realistic appearance.
+The GAN model inspired many subsequent works for
+image synthesis, such as [ 8,28,2,13,32,30,21,36,3,5].
+Liuet al. [21] proposed an unsupervised image to image
+translation framework based on coupled GANs, which aims
+to learn the joint representation of images in different do-
+mains. This algorithm is the basis for the DeepFake algo-
+rithm.
+The creation of a DeepFake video starts with an input
+video of a speciﬁc individual (’target’), and generates an-
+other video with the target’s faces replaced with that of an-
+other individual (’source’), based on a GAN model trained
+to translate between the faces of the target and the source,
+see Figure 1. More recently, Zhu et al. [36] proposed cycle-
+consistent loss to push the performance of GAN, namely
+Cycle-GAN. Bansal et al. [3] stepped further and pro-
+posed Recycle-GAN, which incorporated temporal infor-
+mation and spatial cues with conditional generative adver-
+sarial networks. StarGAN [ 5] learned the mapping across
+multiple domains only using a single generator and discrim-
+inator.
+Resampling Detection . The artifacts introduced by the
+DeepFake production pipeline is in essence due to afﬁne
+transforms to the synthesized face. In the literature of dig-
+ital media forensics, detecting transforms or the underly-
+ing resampling algorithm has been extensively studied, e.g.,
+[25,26,22,15,16,17,7,24,27,12,4]. However, the
+performance of these methods are affected by the post-
+processing steps, such as image/video compression, whichare not subject to simple modeling. Besides, these methods
+usually aim to estimate the exact resampling operation from
+whole images, but for our purpose, a simpler solution can
+be obtained by just comparing regions of potentially synthe-
+sized faces and the rest of the image – the latter are expected
+to be free of such artifacts while the existence of such arti-
+facts in the former is a telltale cue for the video being a
+DeepFake.
+GAN Generated Image/Video Detection . Traditional
+forgery can be detected using methods such as [ 35,6]. Zhou
+et al. [35] proposed two-stream CNN for face tampering de-
+tection. NoisePrint [ 6] employed CNN model to trace de-
+vice ﬁngerprints for forgery detection. Recently, detecting
+GAN generated images or videos has also made progress.
+Liet al. [20] observed that DeepFake faces lack realistic
+eye blinking, as training images obtained over the Inter-
+net usually do not include photographs with the subject’s
+eyes closed. The lack of eye blinking is detected with a
+CNN/RNN model to expose DeepFake videos. However,
+this detection can be circumvented by purposely incorpo-
+rating images with closed eyes in training. Yang et al. [34]
+utilized the inconsistency in head pose to detect fake videos.
+The work [ 19] exploited the color disparity between GAN
+generated images and real images in non-RGB color spaces
+to classify them. The work [ 23] also analyzed the color dif-
+ference between GAN images and real images. However,
+it is not clear if this method is extensible to inspecting lo-
+cal regions as in the case of DeepFake. Afchar et al. [1]
+trained a convolutional neural networks namely MesoNet
+to directly classify real faces and fake faces generated by
+DeepFake and Face2face [ 33]. The work [ 10] extended [ 1]
+to temporal domain by incorporating RNN on CNN. While
+it shows promising performance, this holistic approach has
+its drawback. In particular, it requires both real and fake
+images as training data, and generating the fake images us-
+ing the AI-based synthesis algorithms is less efﬁcient than
+the simple mechanism for training data generation in our
+method.
+3. Methods
+We detect synthesized videos by exploiting the face
+warping artifacts resulted from the DeepFake production
+pipeline. For efﬁcient running time, the current DeepFake
+algorithms create synthesized face images of ﬁxed sizes.
+These faces are then undergone an afﬁne transform ( i.e.,
+scaling, rotation and shearing) to match the poses of the
+target faces that they will replace (see Figure 1(g) – (h)).
+As such, the facial region and surrounding regions in the
+original image/video frame will present artifacts, the reso-
+lution inconsistency due to such transforms after the subse-
+quent compression step to generate the ﬁnal image or video
+frames. Therefore, we propose to use a Convolutional Neu-
+ral Network (CNN) model to detect the presence of such
+47
+
+
+==== AUDIO ====
+HOLA: Enhancing Audio-visual Deepfake Detection via
+Hierarchical Contextual Aggregations and Efficient Pre-training
+Xuecheng Wu†
+wuxc3@stu.xjtu.edu.cn
+Xi’an Jiaotong University
+Xi’an, ChinaDanlei Huang†
+forsummer@stu.xjtu.edu.cn
+Xi’an Jiaotong University
+Xi’an, ChinaHeli Sun*‡
+hlsun@xjtu.edu.cn
+Xi’an Jiaotong University
+Xi’an, China
+Xinyi Yin†
+yinxinyi@stu.zzu.edu.cn
+Zhengzhou University
+Zhengzhou, ChinaYifan Wang
+wangyfan@mail.ustc.edu.cn
+University of Science and Technology
+of China
+Hefei, ChinaHao Wang
+haowangx@xjtu.edu.cn
+Xi’an Jiaotong University
+Xi’an, China
+Jia Zhang
+zhang_jia@stu.xjtu.edu.cn
+Xi’an Jiaotong University
+Xi’an, ChinaFei Wang
+fei_wang@mail.dlut.edu.cn
+Dalian University of Technology
+Dalian, ChinaPeihao Guo
+3121132005@stu.xjtu.edu.cn
+Xi’an Jiaotong University
+Xi’an, China
+Suyu Xing
+xingsuyu@stu.xjtu.edu.cn
+Xi’an Jiaotong University
+Xi’an, ChinaJunxiao Xue‡
+xuejx@zhejianglab.cn
+Zhejiang Lab
+Hangzhou, ChinaLiang He
+lhe@xjtu.edu.cn
+Xi’an Jiaotong University
+Xi’an, China
+ABSTRACT
+Advances in Generative AI have made video-level deepfake detec-
+tion increasingly challenging, exposing the limitations of current
+detection techniques. In this paper, we present HOLA, our solution
+to the Video-Level Deepfake Detection track of 2025 1M-Deepfakes
+Detection Challenge. Inspired by the success of large-scale pre-
+training in the general domain, we first scale audio-visual self-
+supervised pre-training in the multimodal video-level deepfake
+detection, which leverages our self-built dataset of 1.81M samples,
+thereby leading to a unified two-stage framework. To be specific,
+HOLA features an iterative-aware cross-modal learning module
+for selective audio-visual interactions, hierarchical contextual mod-
+eling with gated aggregations under the local-global perspective,
+and a pyramid-like refiner for scale-aware cross-grained semantic
+enhancements. Moreover, we propose the pseudo supervised singal
+injection strategy to further boost model performance. Extensive
+experiments across expert models and MLLMs impressivly demon-
+strate the effectiveness of our proposed HOLA. We also conduct
+a series of ablation studies to explore the crucial design factors
+of our introduced components. Remarkably, our HOLA ranks 1st,
+outperforming the second by 0.0476 AUC on the TestA set.
+Permission to make digital or hard copies of all or part of this work for personal or
+classroom use is granted without fee provided that copies are not made or distributed
+for profit or commercial advantage and that copies bear this notice and the full citation
+on the first page. Copyrights for components of this work owned by others than ACM
+must be honored. Abstracting with credit is permitted. To copy otherwise, or republish,
+to post on servers or to redistribute to lists, requires prior specific permission and/or a
+fee. Request permissions from permissions@acm.org.
+MM ’25, October 27-October 31, 2025, Dublin, Ireland
+©2025 Association for Computing Machinery.
+ACM ISBN 978-1-4503-XXXX-X/25/10. . . $15.00
+https://doi.org/XXXXXXX.XXXXXXXCCS CONCEPTS
+•Computing methodologies →Scene understanding ;•Infor-
+mation systems→Multimedia information systems .
+KEYWORDS
+Deepfake detection, Audio-visual learning, Self-supervised pre-
+training, Multimodal fusion
+ACM Reference Format:
+Xuecheng Wu†, Danlei Huang†, Heli Sun*‡, Xinyi Yin†, Yifan Wang, Hao
+Wang, Jia Zhang, Fei Wang, Peihao Guo, Suyu Xing, Junxiao Xue ‡, and Liang
+He. 2025. HOLA: Enhancing Audio-visual Deepfake Detection via Hierar-
+chical Contextual Aggregations and Efficient Pre-training. In Proceedings
+of 33rd ACM International Conference on Multimedia (MM ’25). ACM, New
+York, NY, USA, 8 pages. https://doi.org/XXXXXXX.XXXXXXX
+1 INTRODUCTION
+Generative AI technologies present new opportunities for creating
+immersive content in various multimedia fields, including VR, cine-
+matic production, and communications. However, their misuse can
+contribute to the rise of deepfake-related issues, leading to serious
+social security risks such as online fraud, defamation, and fake
+news. As a result, developing effective deepfake detection systems
+is crucial to ensure the reliability of multimedia applications.
+In light of this, the 2025 1M-Deepfakes Detection Challenge
+has brought promising advancements in building powerful and
+robust deepfake detection systems. The new AV-Deepfake1M++
+dataset [ 6], built upon the AV-Deepfake1M dataset [ 5], contains
+∗Corresponding author.
+†Equal contributions.
+‡Equal advice.arXiv:2507.22781v1  [cs.CV]  30 Jul 2025
+
+MM ’25, October 27-October 31, 2025, Dublin, Ireland Wu et al.
+over 2M samples and thousands of speakers. Regarding its construc-
+tion procedure, AV-Deepfake1M++ is generated by modifying audio
+information through word-level deletion ,insertion , and replacement
+cross-grained manipulations, and then aligning fine-grained ele-
+ments such as lip movements and facial actions with the generated
+audio and corresponding visual content [ 5,7]. The impressive ex-
+pansion in both quality and quantity presents new challenges for
+current SOTA deepfake detectors, particularly in capturing audio-
+visual correlations in the deepfake contexts. In this work, we focus
+on Track 1, i.e., Video-Level Deepfake Detection, where the task
+goal is to determine whether a given audio-visual sample, contain-
+ing a single speaker, is a deepfake or a real video.
+Given the above challenges, expert visual-only deepfake detec-
+tors [ 13,30,44] or visual-language models (VLMs) [ 22,47,54] often
+fail to adequately capture the complex deepfake cues embedded in
+the audio modality. Therefore, we naturally decide to approach the
+issues from the perspective of audio-visual joint modeling, primar-
+ily focusing our design efforts on the aggregations of cross-modal
+correlations. Most of the existing cross-modal deepfake detection
+methods [ 9,46,52] typically rely on a limited-scale dataset for spe-
+cialized design, which often results in models that cannot learn
+sufficiently generalizable deepfake-related representations, thereby
+failing to fully unleash the potential of advanced architectures. In
+the general vision and language domains, large-scale pre-training
+with scaling properties, followed by fine-tuning on downstream
+tasks such as multimodal emotion analysis [ 12,48,49] and action
+recognition [ 36], has successfully leveraged the full potential of
+advanced model designs, leading to significant performance.
+Inspired by such tremendous success, this work proposes a two-
+stage joint learning framework termed HOLA (Fig. 1) for video-level
+deepfake detection. Specifically, during pre-training, we follow the
+design of [ 40,48] to construct transformer-based encoders for both
+audio-visual modalities. We then plainly design an audio-visual
+fusion module consisting of the attention-based components to
+capture the correlated information. Additionally, we introduce the
+audio-visual dual masking strategy to balance the performance and
+training costs with an acceptable drops. Building upon this, we con-
+struct a massive dataset consisting of 1.81M samples sourced from
+the speaker recognition datasets [ 11,53] to support scalable pre-
+training, thereby establishing a solid foundation for downstream
+deepfake detection. During deepfake fine-tuning, leveraging the
+audio-visual encoders which learn generalized facial representa-
+tions, we design three distinct components from the hierarchical
+contextual perspective to fully aggregate cross-modal correlations
+for capturing deepfake cues. First, we propose an iterative-aware
+cross-modal learning module to perform selective interactions,
+thereby suppressing intra-modal redundancies and enhancing com-
+plementary forgery cues. Based on the enhanced features, we then
+develop a local-global contextual fusion module with gated aggre-
+gations to achieve a comprehensive capture of both local tampering
+artifacts and global semantic inconsistencies. Finally, we introduce a
+pyramid-like refiner to perform scale-aware cross-grained semantic
+enhancements, which is coupled with a classifier to output the final
+predictions. Moreover, we introduce a pseudo-supervised signal
+injection strategy, which boosts the fine-tuning scale by extracting
+the absolutely confident samples from each iteration, leading to
+further performance gains. Extensive experimental results acrossAV-Deepfake1M++ [ 6] subsets demonstrate the effectiveness of our
+HOLA. Moreover, we evaluate the performance of advanced VLMs
+in this scenario to further validate the superiority of our expert
+model. We also perform ablation studies to explore the critical de-
+sign factors of our proposed components. Notably, we achieve the
+first place in this video-level deepfake detection track, outperform-
+ing the second place by 0.0476 AUC on the TestA set.
+In addition to advancing deepfake detection, our HOLA can
+also inspire advancements in audio-visual scene understanding and
+omni-modal language models [ 16,28]. In summary, our main con-
+tributions are three-fold: (i). We efficiently perform data scaling
+in learning general facial representations for audio-visual deep-
+fake detection, constructing 1.81M pre-training samples, thereby
+establishing a two-stage training paradigm for impressive perfor-
+mance. (ii). We propose the iterative-aware cross-modal learning
+module, local-global contextual fusion module, and pyramid-like
+refiner to perform hierarchical contextual aggregations, facilitat-
+ing the capture of deepfake-related cues. (iii). We introduce the
+pseudo-supervised signal injection strategy to globally enhance
+performance. Extensive experiments across AV-Deepfake1M++ sub-
+sets demonstrate the effectiveness of our HOLA. A series of ablation
+studies are also conducted to explore the key factors of our design.
+2 RELATED WORK
+2.1 Deepfake Detection Datasets
+Existing deepfake detection datasets can be generally classified into
+unimodal and multimodal ones. Unimodal datasets are predomi-
+nantly composed of visual modality, for instance, FaceForensics++
+[37] provides over 1.8M images extracted from 1,000 real and manip-
+ulated videos. Celeb-DF [ 23] comprises 590 real and 5,639 forged
+videos of celebrities. Deepfake-Synthetic-20K [ 39] offers 20,000
+high-resolution synthetic face images generated using StyleGAN-
+2 [19]. Multimodal datasets typically contain two or more modalities
+among images, videos, and audio, making them suitable for cross-
+modal deepfake detection research. FakeAVCeleb [ 20] contains 500
+real videos and 19,500 fake videos. ForgeryNet [ 17] includes 2.9M
+images and 221,247 videos, covering 7 image-level and 8 video-level
+forgery techniques. DF40 [ 51] encompasses 40 deepfake generation
+techniques, featuring over 0.1M forged video clips and more than
+1M fake images. DDL [ 29] offers over 1.8M fake samples across
+image, video, and audio modalities. The dataset used in this work,
+AV-Deepfake1M++ [ 6], is the currently largeset audio-visual multi-
+modal deepfake detection dataset comprising over 2M high-quality
+video clips and covering over 2,000 speakers.
+2.2 Deepfake Detection Methods
+Existing approaches in deepfake detection can be categorized into
+visual-based and multimodal ones. Specifically, visual-based meth-
+ods can be further divided into image-level and video-level de-
+tection. Image-level detection relies on digital forensics and the
+identification of visual artifacts. Lugstein et al. [ 27] introduce PRNU
+from the forensics domain into deepfake detection. Detectify [ 15]
+combines ELA with CNNs for robust detection. Zhao et al. [ 55]
+regard this detection task as fine-grained classification and design
+a multi-attention model. Nguyen et al. [ 31] propose a localized arti-
+fact attention network under the multi-task manner. Video-level
+
+==== HYBRID ====
+Received 30 March 2025, accepted 24 April 2025, date of publication 30 April 2025, date of current version 12 May 2025.
+Digital Object Identifier 10.1 109/ACCESS.2025.3566008
+A Hybrid Deep Learning Framework for Deepfake
+Detection Using Temporal and Spatial Features
+FAZEEL ZAFAR
+1, TALHA AHMED KHAN
+2, SALAS AKBAR1, MUHAMMAD TALHA UBAID
+3,
+SAMEENA JAVAID
+1, AND KUSHSAIRY ABDUL KADIR
+4, (Senior Member, IEEE)
+1Department of Computer Sciences, School of Engineering and Applied Sciences, Bahria University, Karachi Campus, Karachi 75290, Pakistan
+2Cybersecurity and Technological Convergence (CTC) Section, Malaysian Institute of Information Technology, Universiti Kuala Lumpur, Kuala Lumpur 53100,
+Malaysia
+3Department of Information Technology, University of Central Punjab, Lahore 54000, Pakistan
+4British Malaysian Institute, Universiti Kuala Lumpur, Kuala Lumpur 53100, Malaysia
+Corresponding authors: Talha Ahmed Khan (talha@unikl.edu.my) and Kushsairy Abdul Kadir (kushsairy@unikl.edu.my)
+This work was supported by the Universiti Kuala Lumpur, Kuala Lumpur, Malaysia.
+ABSTRACT The rise of deep-fake technology has sparked concerns as it blurs the distinction between fake
+media by harnessing Generative Adversarial Networks (GANs). This has raised issues surrounding privacy
+and security in the realm. This has led to a decrease in trust during online interactions; thus, emphasizing
+the importance of creating reliable methods for detection purposes. Our research introduces a model for
+detecting deepfakes by utilizing an Enhanced EfficientNet B0 structure in conjunction with Temporal
+Convolutional Neural Networks (TempCNNs). This approach aims to tackle the challenges presented
+by the evolving sophistication of deep-fake techniques. The system dissects video inputs into frames to
+extract features comprehensively by using Multi Test Convolutional Networks (MTCNN). This method
+ensures face detection and alignment by focusing on facial regions. To enhance the model’s adaptability,
+to different scenarios and datasets we implement data augmentation techniques such as CutMix, MixUp and
+Random Erasing. These strategies help the model maintain its strength, against distortions found in deepfake
+content. The backbone of EfficientNet B0 utilizes Mobile Inverted Bottleneck Convolutions (MBConv)
+and Squeeze and Excitation (SE ) blocks to enhance feature extraction by adjusting channels to highlight
+details effectively. A Feature Pyramid Network (FPN) facilitates the fusion of scale features capturing
+intricate details as well, as broader context. When tested on the FFIW 10 K dataset, which comprises 10,000
+videos evenly split between manipulated content, the model attained a training accuracy of 91.5 % and a
+testing accuracy of 92.45 %, after 40 epochs. The findings showcase the model’s proficiency, in identifying
+videos with precision and tackling the issue of class imbalances found in datasets – a valuable contribution,
+to advancing dependable deepfake detection solutions. Furthermore, the model achieves an impressive
+balance between accuracy and computational efficiency, attaining 92.45% testing accuracy with a lightweight
+computational cost of 0.45 GFLOPs, making it a highly practical choice for real-world deployment.
+INDEX TERMS Deepfake detection, face detection and alignment, EfficientNet B0, temporal convolutional
+networks (TCNs), multi-task convolutional neural network (MTCNN), feature pyramid network (FPN),
+mobile inverted bottleneck convolutions (MBConv).
+I. INTRODUCTION
+As technology has significantly advanced in recent years,
+the challenges related to these advancements have also
+risen substantially in various fields. Among all other fields
+The associate editor coordinating the review of this manuscript and
+approving it for publication was Zahid Akhtar
+ .Deepfake is one of the major concern these days as deep-
+fake has put a question over the legitimacy of the media
+and information security. Deepfake uses namely Generative
+Adversarial Networks (GANs) [1], to generate hyper realistic
+synthesized/simulated media. Because of this artificial fabri-
+cation of digital content, establishing the difference between
+real and synthesized data has become significantly difficult.
+79560
+2025 The Authors. This work is licensed under a Creative Commons Attribution 4.0 License.
+For more information, see https://creativecommons.org/licenses/by/4.0/ VOLUME 13, 2025
+
+F. Zafar et al.: Hybrid Deep Learning Framework for Deepfake Detection
+These exaggeration in generation of fabricated media, both
+videos and images, have raised a major concern about media
+validity and its effect on societal norms, as deepfake gen-
+eration may lead to procreation of false and misleading
+information as well as the loss of societal faith over dig-
+ital content [2]. The advancements in GANs models and
+availability of larger datasets have helped in generation of
+remarkably realistic digital media that goes undetected by
+human eye, but as these models work on spatial and tem-
+poral fabrications, these fabrications can be detected using
+advanced techniques of deep learning models [3]. These con-
+cerning advancements in generation of false media demands
+for the establishment of advanced and effective deepfake
+detection algorithms. To overcome the challenges of deepfake
+detection, researchers has opted more advanced deep learn-
+ing approaches that can detect spatiotemporal fabrications
+of media content more accurately [3]. Efficient Net belongs
+to the family of Convolutional Neural Networks (CNNs)
+that handles width, depth and resolution of the network to
+attain maximum accuracy. It is one of the many technologies
+being implemented for detection of deepfake media content,
+as Efficient Net uses far less computational cost then other
+techniques [4], making it one of the potential technique to
+detect fabricated media as it has capacity to extract precise
+information from images and videos. The advancement in
+production of concerning accurate fabricated media has pre-
+sented us with a challenge far greater than just spatial domain,
+lack of temporal coherence in these fabricated images/videos
+is a very crucial aspect to be addressed. In recent years Tem-
+poral Neural Networks (TempCNNs) have become one of the
+main technique to handle sequential data. They offer signif-
+icant advantage over Recurrent Neural Networks (RNNs) as
+TempCNNs maintains the relation between temporal scales in
+hierarchical manner [5]. When TempCNNs and Efficient Net
+are combined together they can provide a technique that can
+analyze spatiotemporal intricacies of deepfake media more
+accurately. In this paper, an integrated approach of Efficient
+Net and TempCNNs is proposed for deepfake detection,
+where Efficient Net is responsible for spatial feature extrac-
+tion and TempCNNs for pattern recognition. By making most
+of the strength, proposed by both architectures this research
+aims for a better approach for detection real media from
+fake media. Given the increasing sophistication of deepfake
+generation techniques, there is a growing need for solu-
+tions that not only achieve high detection accuracy but also
+maintain computational efficiency. Traditional methods often
+sacrifice real-world applicability due to high computational
+costs. Our approach, however, presents a balanced trade-off,
+ensuring that high accuracy can be achieved without exces-
+sive resource consumption, making it a more viable solution
+for practical, real-world deployment.
+II. LITERATURE REVIEW
+The field of deepfake detection and related computer vision
+applications has seen significant advancements in recent
+years, with various models and techniques being developedto improve accuracy and efficiency. The literature in this
+domain highlights the evolution of approaches, datasets,
+and performance metrics, demonstrating how research has
+progressively tackled the challenges posed by deep-fake
+technology.
+Deepfake detection has leveraged Convolutional Neural
+Networks (CNNs) and hybrid models to achieve high detec-
+tion accuracy. A 2024 study utilized Inception Net in a
+CNN-based comparative analysis, trained on a Kaggle dataset
+comprising 401 videos and 3,745 images post-augmentation,
+achieving an accuracy of 92.3% with moderate computational
+efficiency [6]. Similarly, a 2023 study applied Support Vector
+Machines (SVM) with Principal Component Analysis (PCA)
+on a custom dataset, transforming RGB images to YCbCr,
+leading to a 92.8% accuracy when using PCA, compared
+to 72.2% without PCA [8]. A 2025 study further enhanced
+face forgery detection by introducing attention-based fea-
+ture learning and Optimized Long Short-Term Memory
+(OLSTM). Using datasets such as FaceForensics++, Deep-
+fake Detection Challenge, Celebrity Deepfake, and Wild
+Deepfake, this approach achieved a cross-validated accu-
+racy of 94.65%, albeit at a lower efficiency due to its
+reliance on OLSTM and ResNet-50 Multi-Head Attention
+(RN50MHA) [9].
+Recent comparative analyses have shed light on the
+performance of various deepfake detection architectures.
+In 2024, researchers compared CNN+RNN, Deepfake
+Detection Network (DAFDN), Hybrid Inception ResNet v2,
+and Xception models on a comprehensive dataset. The
+study reported accuracy rates of 94.8% for CNN+RNN,
+97.8% for DAFDN, and 98% for the Hybrid model, with
+efficiency varying based on computational demands [11].
+Similarly, a 2022 study assessed multiple deepfake detec-
+tion algorithms on FaceForensics++, reporting an accuracy
+of 96%, indicating that efficiency trade-offs are a key factor
+in model selection [20]. Further, Generative Adversarial
+Networks (GANs) have played a crucial role in image syn-
+thesis and deep-fake generation. A 2020 review of GAN
+variants in computer vision examined datasets such as
+LSUN-BEDROOM, CELEBA-HQ-128, and CIFAR-10,
+reporting a precision of over 90% for BigGAN, though
+computational costs were noted as a challenge [7]. Like-
+wise, a 2018 study implemented Enhanced Super-Resolution
+Generative Adversarial Networks (ESRGAN) using Residual
+Dense Blocks (RDDB) without Batch Normalization (BN)
+layers. Despite achieving an RMSE score of 15.15% on the
+PIRM self-validation dataset, the model’s high complexity
+made it less efficient [10].
+On the other hand, Alternative deepfake detection meth-
+ods have incorporated diverse techniques. A 2022 study
+employed MesoNet on FaceForensics++ and Celeb-DF,
+yielding an 88% accuracy while maintaining high efficiency
+due to its lightweight nature [13]. Another 2022 study focused
+on Point of Interest (POI) action detection using Multi-task
+Cascaded Convolutional Networks (MTCNN) and MesoNet
+on a customized dataset of Barack Obama, achieving an
+VOLUME 13, 2025 79561

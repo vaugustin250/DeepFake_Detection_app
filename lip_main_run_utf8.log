@@ -1,0 +1,1512 @@
+﻿python.exe : 2026-04-05 18:55:50.800428: I tensorflow/core/util/port.cc:153] 
+oneDNN custom operations are on. You may see slightly different numerical 
+results due to floating-point round-off errors from different computation 
+orders. To turn them off, set the environment variable 
+`TF_ENABLE_ONEDNN_OPTS=0`.
+At line:1 char:26
++ ... loglevel=2; & "C:/Users/agust/AppData/Local/Programs/Python/Python310 ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (2026-04-05 18:5...ONEDNN_OPTS=0`. 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+C:\Users\agust\AppData\Local\Programs\Python\Python310\lib\site-packages\google
+\api_core\_python_version_support.py:275: FutureWarning: You are using a 
+Python version (3.10.11) which Google will stop supporting in new releases of 
+google.api_core once it reaches its end of life (2026-10-04). Please upgrade 
+to the latest Python version, or at least Python 3.11, to continue receiving 
+updates for google.api_core past that date.
+  warnings.warn(message, FutureWarning)
+[libprotobuf ERROR 
+external/com_google_protobuf/src/google/protobuf/text_format.cc:335] Error 
+parsing text-format mediapipe.CalculatorGraphConfig: 68:22: Expected 
+identifier, got: \
+Traceback (most recent call last):
+  File "c:\Users\agust\Downloads\deeo\New 
+folder\deepfake-detector-python\lip_main.py", line 227, in <module>
+    app = DeepfakeApp()
+  File "c:\Users\agust\Downloads\deeo\New 
+folder\deepfake-detector-python\lip_main.py", line 42, in __init__
+    self.detector = DeepfakeDetector()
+  File "c:\Users\agust\Downloads\deeo\New 
+folder\deepfake-detector-python\detector.py", line 48, in __init__
+    self.face_mesh = face_mesh.FaceMesh(
+  File "C:\Users\agust\AppData\Local\Programs\Python\Python310\lib\site-package
+s\mediapipe\python\solutions\face_mesh.py", line 95, in __init__
+    super().__init__(
+  File "C:\Users\agust\AppData\Local\Programs\Python\Python310\lib\site-package
+s\mediapipe\python\solution_base.py", line 248, in __init__
+    self._graph = calculator_graph.CalculatorGraph(
+RuntimeError: Failed to parse: node {
+  calculator: "ImagePropertiesCalculator"
+  input_stream: "IMAGE:image"
+  output_stream: "SIZE:image_size"
+}
+node {
+  calculator: "PreviousLoopbackCalculator"
+  input_stream: "MAIN:image"
+  input_stream: "LOOP:face_rects_from_landmarks"
+  output_stream: "PREV_LOOP:prev_face_rects_from_landmarks"
+  input_stream_info {
+    tag_index: "LOOP"
+    back_edge: true
+  }
+}
+node {
+  calculator: "GateCalculator"
+  input_stream: "prev_face_rects_from_landmarks"
+  output_stream: "gated_prev_face_rects_from_landmarks"
+  input_side_packet: "ALLOW:use_prev_landmarks"
+  options {
+    [mediapipe.GateCalculatorOptions.ext] {
+      allow: true
+    }
+  }
+}
+node {
+  calculator: "NormalizedRectVectorHasMinSizeCalculator"
+  input_stream: "ITERABLE:gated_prev_face_rects_from_landmarks"
+  output_stream: "prev_has_enough_faces"
+  input_side_packet: "num_faces"
+}
+node {
+  calculator: "GateCalculator"
+  input_stream: "image"
+  input_stream: "DISALLOW:prev_has_enough_faces"
+  output_stream: "gated_image"
+  options {
+    [mediapipe.GateCalculatorOptions.ext] {
+      empty_packets_as_allow: true
+    }
+  }
+}
+node {
+  calculator: "ImagePropertiesCalculator"
+  input_stream: "IMAGE:gated_image"
+  output_stream: "SIZE:gated_image_size"
+}
+node {
+  name: "facelandmarkcpu__TfLiteCustomOpResolverCalculator"
+  calculator: "TfLiteCustomOpResolverCalculator"
+  output_side_packet: "OP_RESOLVER:facelandmarkcpu__op_resolver"
+}
+node {
+  name: "facedetectionshortrangecpu__facedetectionshortrange__facedetection__To
+ImageCalculator"
+  calculator: "ToImageCalculator"
+  input_stream: "IMAGE:gated_image"
+  output_stream: "IMAGE:facedetectionshortrangecpu__facedetectionshortrange__fa
+cedetection__multi_backend_image"
+}
+node {
+  name: "facedetectionshortrangecpu__facedetectionshortrange__facedetection__Im
+ageToTensorCalculator"
+  calculator: "ImageToTensorCalculator"
+  input_stream: "IMAGE:facedetectionshortrangecpu__facedetectionshortrange__fac
+edetection__multi_backend_image"
+  output_stream: "TENSORS:facedetectionshortrangecpu__facedetectionshortrange__
+facedetection__input_tensors"
+  output_stream: "MATRIX:facedetectionshortrangecpu__facedetectionshortrange__f
+acedetection__transform_matrix"
+  node_options {
+    type_url: "type.googleapis.com/mediapipe.ImageToTensorCalculatorOptions"
+    value: 
+"\030\001"\n\r\000\000\200\277\025\000\000\200?0\001\010\200\001\020\200\001"
+  }
+}
+node {
+  name: "facedetectionshortrangecpu__facedetectionshortrange__facedetection__Ss
+dAnchorsCalculator"
+  calculator: "SsdAnchorsCalculator"
+  output_side_packet: 
+"facedetectionshortrangecpu__facedetectionshortrange__facedetection__anchors"
+  node_options {
+    type_url: "type.googleapis.com/mediapipe.SsdAnchorsCalculatorOptions"
+    value: "\035\000\000\030>%\000\000@?-\000\000\000?5\000\000\000?]\000\000\2
+00?p\001\010\200\001\020\200\0018\004P\010P\020P\020P\020m\000\000\200?"
+  }
+}
+node {
+  name: "facelandmarkcpu__facelandmarksmodelloader__switchcontainer__SwitchDemu
+xCalculator"
+  calculator: "SwitchDemuxCalculator"
+  input_side_packet: "ENABLE:with_attention"
+  options {
+    [mediapipe.SwitchContainerOptions.ext] {
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__facelandmarksmodelloader__switchcontainer__ConstantSi
+dePacketCalculator_1"
+  calculator: "ConstantSidePacketCalculator"
+  output_side_packet: "PACKET:facelandmarkcpu__facelandmarksmodelloader__switch
+container__c0__facelandmarkcpu__facelandmarksmodelloader__model_path"
+  options {
+    [mediapipe.ConstantSidePacketCalculatorOptions.ext] {
+      packet {
+        string_value: "mediapipe/modules/face_landmark/face_landmark.tflite"
+      }
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__facelandmarksmodelloader__switchcontainer__ConstantSi
+dePacketCalculator_2"
+  calculator: "ConstantSidePacketCalculator"
+  output_side_packet: "PACKET:facelandmarkcpu__facelandmarksmodelloader__switch
+container__c1__facelandmarkcpu__facelandmarksmodelloader__model_path"
+  options {
+    [mediapipe.ConstantSidePacketCalculatorOptions.ext] {
+      packet {
+        string_value: 
+"mediapipe/modules/face_landmark/face_landmark_with_attention.tflite"
+      }
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__facelandmarksmodelloader__switchcontainer__SwitchMuxC
+alculator"
+  calculator: "SwitchMuxCalculator"
+  input_side_packet: "ENABLE:with_attention"
+  input_side_packet: "C0__PACKET:facelandmarkcpu__facelandmarksmodelloader__swi
+tchcontainer__c0__facelandmarkcpu__facelandmarksmodelloader__model_path"
+  input_side_packet: "C1__PACKET:facelandmarkcpu__facelandmarksmodelloader__swi
+tchcontainer__c1__facelandmarkcpu__facelandmarksmodelloader__model_path"
+  output_side_packet: 
+"PACKET:facelandmarkcpu__facelandmarksmodelloader__model_path"
+  options {
+    [mediapipe.SwitchContainerOptions.ext] {
+    }
+  }
+}
+node {
+  name: 
+"facelandmarkcpu__facelandmarksmodelloader__LocalFileContentsCalculator"
+  calculator: "LocalFileContentsCalculator"
+  input_side_packet: 
+"FILE_PATH:facelandmarkcpu__facelandmarksmodelloader__model_path"
+  output_side_packet: 
+"CONTENTS:facelandmarkcpu__facelandmarksmodelloader__model_blob"
+}
+node {
+  name: "facelandmarkcpu__facelandmarksmodelloader__TfLiteModelCalculator"
+  calculator: "TfLiteModelCalculator"
+  input_side_packet: 
+"MODEL_BLOB:facelandmarkcpu__facelandmarksmodelloader__model_blob"
+  output_side_packet: "MODEL:facelandmarkcpu__model"
+}
+node {
+  name: "facedetectionshortrangecpu__facedetectionshortrange__facedetection__in
+ferencecalculator__facedetectionshortrangecpu__facedetectionshortrange__facedet
+ection__InferenceCalculator"
+  calculator: "InferenceCalculatorCpu"
+  input_stream: "TENSORS:facedetectionshortrangecpu__facedetectionshortrange__f
+acedetection__input_tensors"
+  output_stream: "TENSORS:facedetectionshortrangecpu__facedetectionshortrange__
+facedetection__detection_tensors"
+  node_options {
+    type_url: "type.googleapis.com/mediapipe.InferenceCalculatorOptions"
+    value: "*\002"\000\nBmediapipe/modules/face_detection/face_detection_short_
+range.tflite"
+  }
+}
+node {
+  name: "facedetectionshortrangecpu__facedetectionshortrange__facedetection__Te
+nsorsToDetectionsCalculator"
+  calculator: "TensorsToDetectionsCalculator"
+  input_stream: "TENSORS:facedetectionshortrangecpu__facedetectionshortrange__f
+acedetection__detection_tensors"
+  output_stream: "DETECTIONS:facedetectionshortrangecpu__facedetectionshortrang
+e__facedetection__unfiltered_detections"
+  input_side_packet: "ANCHORS:facedetectionshortrangecpu__facedetectionshortran
+ge__facedetection__anchors"
+  node_options {
+    type_url: 
+"type.googleapis.com/mediapipe.TensorsToDetectionsCalculatorOptions"
+    value: "\010\001\020\200\007\030\020%\000\000\000C-\000\000\000C5\000\000\0
+00C=\000\000\000CH\004P\006X\002`\000p\001x\001\205\001\000\000\310B\235\001\00
+0\000\000?"
+  }
+}
+node {
+  name: "facedetectionshortrangecpu__facedetectionshortrange__facedetection__No
+nMaxSuppressionCalculator"
+  calculator: "NonMaxSuppressionCalculator"
+  input_stream: "facedetectionshortrangecpu__facedetectionshortrange__facedetec
+tion__unfiltered_detections"
+  output_stream: "facedetectionshortrangecpu__facedetectionshortrange__facedete
+ction__filtered_detections"
+  options {
+    [mediapipe.NonMaxSuppressionCalculatorOptions.ext] {
+      min_suppression_threshold: 0.3
+      overlap_type: INTERSECTION_OVER_UNION
+      algorithm: WEIGHTED
+    }
+  }
+}
+node {
+  name: "facedetectionshortrangecpu__facedetectionshortrange__facedetection__De
+tectionProjectionCalculator"
+  calculator: "DetectionProjectionCalculator"
+  input_stream: "DETECTIONS:facedetectionshortrangecpu__facedetectionshortrange
+__facedetection__filtered_detections"
+  input_stream: "PROJECTION_MATRIX:facedetectionshortrangecpu__facedetectionsho
+rtrange__facedetection__transform_matrix"
+  output_stream: "DETECTIONS:all_face_detections"
+}
+node {
+  calculator: "ClipDetectionVectorSizeCalculator"
+  input_stream: "all_face_detections"
+  output_stream: "face_detections"
+  input_side_packet: "num_faces"
+}
+node {
+  calculator: "BeginLoopDetectionCalculator"
+  input_stream: "ITERABLE:face_detections"
+  input_stream: "CLONE:gated_image_size"
+  output_stream: "ITEM:face_detection"
+  output_stream: "CLONE:detections_loop_image_size"
+  output_stream: "BATCH_END:detections_loop_end_timestamp"
+}
+node {
+  name: "facedetectionfrontdetectiontoroi__DetectionsToRectsCalculator"
+  calculator: "DetectionsToRectsCalculator"
+  input_stream: "DETECTION:face_detection"
+  input_stream: "IMAGE_SIZE:detections_loop_image_size"
+  output_stream: "NORM_RECT:facedetectionfrontdetectiontoroi__initial_roi"
+  options {
+    [mediapipe.DetectionsToRectsCalculatorOptions.ext] {
+      rotation_vector_start_keypoint_index: 0
+      rotation_vector_end_keypoint_index: 1
+      rotation_vector_target_angle_degrees: 0
+    }
+  }
+}
+node {
+  name: "facedetectionfrontdetectiontoroi__RectTransformationCalculator"
+  calculator: "RectTransformationCalculator"
+  input_stream: "NORM_RECT:facedetectionfrontdetectiontoroi__initial_roi"
+  input_stream: "IMAGE_SIZE:detections_loop_image_size"
+  output_stream: "face_rect_from_detection"
+  options {
+    [mediapipe.RectTransformationCalculatorOptions.ext] {
+      scale_x: 1.5
+      scale_y: 1.5
+      square_long: true
+    }
+  }
+}
+node {
+  calculator: "EndLoopNormalizedRectCalculator"
+  input_stream: "ITEM:face_rect_from_detection"
+  input_stream: "BATCH_END:detections_loop_end_timestamp"
+  output_stream: "ITERABLE:face_rects_from_detections"
+}
+node {
+  calculator: "AssociationNormRectCalculator"
+  input_stream: "face_rects_from_detections"
+  input_stream: "gated_prev_face_rects_from_landmarks"
+  output_stream: "face_rects"
+  options {
+    [mediapipe.AssociationCalculatorOptions.ext] {
+      min_similarity_threshold: 0.5
+    }
+  }
+}
+node {
+  calculator: "BeginLoopNormalizedRectCalculator"
+  input_stream: "ITERABLE:face_rects"
+  input_stream: "CLONE:0:image"
+  input_stream: "CLONE:1:image_size"
+  output_stream: "ITEM:face_rect"
+  output_stream: "CLONE:0:landmarks_loop_image"
+  output_stream: "CLONE:1:landmarks_loop_image_size"
+  output_stream: "BATCH_END:landmarks_loop_end_timestamp"
+}
+node {
+  name: "facelandmarkcpu__ImageToTensorCalculator"
+  calculator: "ImageToTensorCalculator"
+  input_stream: "IMAGE:landmarks_loop_image"
+  input_stream: "NORM_RECT:face_rect"
+  output_stream: "TENSORS:facelandmarkcpu__input_tensors"
+  options {
+    [mediapipe.ImageToTensorCalculatorOptions.ext] {
+      output_tensor_width: 192
+      output_tensor_height: 192
+      output_tensor_float_range {
+        min: 0
+        max: 1
+      }
+    }
+  }
+}
+node {
+  name: 
+"facelandmarkcpu__inferencecalculator__facelandmarkcpu__InferenceCalculator"
+  calculator: "InferenceCalculatorCpu"
+  input_stream: "TENSORS:facelandmarkcpu__input_tensors"
+  output_stream: "TENSORS:facelandmarkcpu__output_tensors"
+  input_side_packet: "MODEL:facelandmarkcpu__model"
+  input_side_packet: "OP_RESOLVER:facelandmarkcpu__op_resolver"
+  options {
+    [mediapipe.InferenceCalculatorOptions.ext] {
+      delegate {
+        xnnpack {
+        }
+      }
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_1__SwitchDemuxCalculator"
+  calculator: "SwitchDemuxCalculator"
+  input_stream: "facelandmarkcpu__output_tensors"
+  output_stream: 
+"C0__:facelandmarkcpu__switchcontainer_1__c0__facelandmarkcpu__output_tensors"
+  output_stream: 
+"C1__:facelandmarkcpu__switchcontainer_1__c1__facelandmarkcpu__output_tensors"
+  input_side_packet: "ENABLE:with_attention"
+  options {
+    [mediapipe.SwitchContainerOptions.ext] {
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_1__SplitTensorVectorCalculator_1"
+  calculator: "SplitTensorVectorCalculator"
+  input_stream: 
+"facelandmarkcpu__switchcontainer_1__c0__facelandmarkcpu__output_tensors"
+  output_stream: 
+"facelandmarkcpu__switchcontainer_1__c0__facelandmarkcpu__landmark_tensors"
+  output_stream: 
+"facelandmarkcpu__switchcontainer_1__c0__facelandmarkcpu__face_flag_tensor"
+  options {
+    [mediapipe.SplitVectorCalculatorOptions.ext] {
+      ranges {
+        begin: 0
+        end: 1
+      }
+      ranges {
+        begin: 1
+        end: 2
+      }
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_1__SplitTensorVectorCalculator_2"
+  calculator: "SplitTensorVectorCalculator"
+  input_stream: 
+"facelandmarkcpu__switchcontainer_1__c1__facelandmarkcpu__output_tensors"
+  output_stream: 
+"facelandmarkcpu__switchcontainer_1__c1__facelandmarkcpu__landmark_tensors"
+  output_stream: 
+"facelandmarkcpu__switchcontainer_1__c1__facelandmarkcpu__face_flag_tensor"
+  options {
+    [mediapipe.SplitVectorCalculatorOptions.ext] {
+      ranges {
+        begin: 0
+        end: 6
+      }
+      ranges {
+        begin: 6
+        end: 7
+      }
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_1__SwitchMuxCalculator"
+  calculator: "SwitchMuxCalculator"
+  input_stream: "C0__:facelandmarkcpu__switchcontainer_1__c0__facelandmarkcpu__
+landmark_tensors"
+  input_stream: "C0__:1:facelandmarkcpu__switchcontainer_1__c0__facelandmarkcpu
+__face_flag_tensor"
+  input_stream: "C1__:facelandmarkcpu__switchcontainer_1__c1__facelandmarkcpu__
+landmark_tensors"
+  input_stream: "C1__:1:facelandmarkcpu__switchcontainer_1__c1__facelandmarkcpu
+__face_flag_tensor"
+  output_stream: "facelandmarkcpu__landmark_tensors"
+  output_stream: "facelandmarkcpu__face_flag_tensor"
+  input_side_packet: "ENABLE:with_attention"
+  options {
+    [mediapipe.SwitchContainerOptions.ext] {
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__TensorsToFloatsCalculator"
+  calculator: "TensorsToFloatsCalculator"
+  input_stream: "TENSORS:facelandmarkcpu__face_flag_tensor"
+  output_stream: "FLOAT:facelandmarkcpu__face_presence_score"
+  options {
+    [mediapipe.TensorsToFloatsCalculatorOptions.ext] {
+      activation: SIGMOID
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__ThresholdingCalculator"
+  calculator: "ThresholdingCalculator"
+  input_stream: "FLOAT:facelandmarkcpu__face_presence_score"
+  output_stream: "FLAG:facelandmarkcpu__face_presence"
+  options {
+    [mediapipe.ThresholdingCalculatorOptions.ext] {
+      threshold: 0.5
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__GateCalculator"
+  calculator: "GateCalculator"
+  input_stream: "facelandmarkcpu__landmark_tensors"
+  input_stream: "ALLOW:facelandmarkcpu__face_presence"
+  output_stream: "facelandmarkcpu__ensured_landmark_tensors"
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__SwitchDemuxCalculator"
+  calculator: "SwitchDemuxCalculator"
+  input_stream: "TENSORS:facelandmarkcpu__ensured_landmark_tensors"
+  output_stream: "C0__TENSORS:facelandmarkcpu__switchcontainer_2__c0__facelandm
+arkcpu__ensured_landmark_tensors"
+  output_stream: "C1__TENSORS:facelandmarkcpu__switchcontainer_2__c1__facelandm
+arkcpu__ensured_landmark_tensors"
+  input_side_packet: "ENABLE:with_attention"
+  options {
+    [mediapipe.SwitchContainerOptions.ext] {
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarks__TensorsToL
+andmarksCalculator"
+  calculator: "TensorsToLandmarksCalculator"
+  input_stream: "TENSORS:facelandmarkcpu__switchcontainer_2__c0__facelandmarkcp
+u__ensured_landmark_tensors"
+  output_stream: "NORM_LANDMARKS:facelandmarkcpu__switchcontainer_2__c0__facela
+ndmarkcpu__landmarks"
+  options {
+    [mediapipe.TensorsToLandmarksCalculatorOptions.ext] {
+      num_landmarks: 468
+      input_image_width: 192
+      input_image_height: 192
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswithattentio
+n__SplitTensorVectorCalculator"
+  calculator: "SplitTensorVectorCalculator"
+  input_stream: "facelandmarkcpu__switchcontainer_2__c1__facelandmarkcpu__ensur
+ed_landmark_tensors"
+  output_stream: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswit
+hattention__mesh_tensor"
+  output_stream: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswit
+hattention__lips_tensor"
+  output_stream: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswit
+hattention__left_eye_tensor"
+  output_stream: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswit
+hattention__right_eye_tensor"
+  output_stream: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswit
+hattention__left_iris_tensor"
+  output_stream: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswit
+hattention__right_iris_tensor"
+  options {
+    [mediapipe.SplitVectorCalculatorOptions.ext] {
+      ranges {
+        begin: 0
+        end: 1
+      }
+      ranges {
+        begin: 1
+        end: 2
+      }
+      ranges {
+        begin: 2
+        end: 3
+      }
+      ranges {
+        begin: 3
+        end: 4
+      }
+      ranges {
+        begin: 4
+        end: 5
+      }
+      ranges {
+        begin: 5
+        end: 6
+      }
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswithattentio
+n__TensorsToLandmarksCalculator_1"
+  calculator: "TensorsToLandmarksCalculator"
+  input_stream: "TENSORS:facelandmarkcpu__switchcontainer_2__tensorstofacelandm
+arkswithattention__mesh_tensor"
+  output_stream: "NORM_LANDMARKS:facelandmarkcpu__switchcontainer_2__tensorstof
+acelandmarkswithattention__mesh_landmarks"
+  options {
+    [mediapipe.TensorsToLandmarksCalculatorOptions.ext] {
+      num_landmarks: 468
+      input_image_width: 192
+      input_image_height: 192
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswithattentio
+n__TensorsToLandmarksCalculator_2"
+  calculator: "TensorsToLandmarksCalculator"
+  input_stream: "TENSORS:facelandmarkcpu__switchcontainer_2__tensorstofacelandm
+arkswithattention__lips_tensor"
+  output_stream: "NORM_LANDMARKS:facelandmarkcpu__switchcontainer_2__tensorstof
+acelandmarkswithattention__lips_landmarks"
+  options {
+    [mediapipe.TensorsToLandmarksCalculatorOptions.ext] {
+      num_landmarks: 80
+      input_image_width: 192
+      input_image_height: 192
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswithattentio
+n__TensorsToLandmarksCalculator_3"
+  calculator: "TensorsToLandmarksCalculator"
+  input_stream: "TENSORS:facelandmarkcpu__switchcontainer_2__tensorstofacelandm
+arkswithattention__left_eye_tensor"
+  output_stream: "NORM_LANDMARKS:facelandmarkcpu__switchcontainer_2__tensorstof
+acelandmarkswithattention__left_eye_landmarks"
+  options {
+    [mediapipe.TensorsToLandmarksCalculatorOptions.ext] {
+      num_landmarks: 71
+      input_image_width: 192
+      input_image_height: 192
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswithattentio
+n__TensorsToLandmarksCalculator_4"
+  calculator: "TensorsToLandmarksCalculator"
+  input_stream: "TENSORS:facelandmarkcpu__switchcontainer_2__tensorstofacelandm
+arkswithattention__right_eye_tensor"
+  output_stream: "NORM_LANDMARKS:facelandmarkcpu__switchcontainer_2__tensorstof
+acelandmarkswithattention__right_eye_landmarks"
+  options {
+    [mediapipe.TensorsToLandmarksCalculatorOptions.ext] {
+      num_landmarks: 71
+      input_image_width: 192
+      input_image_height: 192
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswithattentio
+n__TensorsToLandmarksCalculator_5"
+  calculator: "TensorsToLandmarksCalculator"
+  input_stream: "TENSORS:facelandmarkcpu__switchcontainer_2__tensorstofacelandm
+arkswithattention__left_iris_tensor"
+  output_stream: "NORM_LANDMARKS:facelandmarkcpu__switchcontainer_2__tensorstof
+acelandmarkswithattention__left_iris_landmarks"
+  options {
+    [mediapipe.TensorsToLandmarksCalculatorOptions.ext] {
+      num_landmarks: 5
+      input_image_width: 192
+      input_image_height: 192
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswithattentio
+n__TensorsToLandmarksCalculator_6"
+  calculator: "TensorsToLandmarksCalculator"
+  input_stream: "TENSORS:facelandmarkcpu__switchcontainer_2__tensorstofacelandm
+arkswithattention__right_iris_tensor"
+  output_stream: "NORM_LANDMARKS:facelandmarkcpu__switchcontainer_2__tensorstof
+acelandmarkswithattention__right_iris_landmarks"
+  options {
+    [mediapipe.TensorsToLandmarksCalculatorOptions.ext] {
+      num_landmarks: 5
+      input_image_width: 192
+      input_image_height: 192
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__tensorstofacelandmarkswithattentio
+n__LandmarksRefinementCalculator"
+  calculator: "LandmarksRefinementCalculator"
+  input_stream: "LANDMARKS:0:facelandmarkcpu__switchcontainer_2__tensorstofacel
+andmarkswithattention__mesh_landmarks"
+  input_stream: "LANDMARKS:1:facelandmarkcpu__switchcontainer_2__tensorstofacel
+andmarkswithattention__lips_landmarks"
+  input_stream: "LANDMARKS:2:facelandmarkcpu__switchcontainer_2__tensorstofacel
+andmarkswithattention__left_eye_landmarks"
+  input_stream: "LANDMARKS:3:facelandmarkcpu__switchcontainer_2__tensorstofacel
+andmarkswithattention__right_eye_landmarks"
+  input_stream: "LANDMARKS:4:facelandmarkcpu__switchcontainer_2__tensorstofacel
+andmarkswithattention__left_iris_landmarks"
+  input_stream: "LANDMARKS:5:facelandmarkcpu__switchcontainer_2__tensorstofacel
+andmarkswithattention__right_iris_landmarks"
+  output_stream: "REFINED_LANDMARKS:facelandmarkcpu__switchcontainer_2__c1__fac
+elandmarkcpu__landmarks"
+  options {
+    [mediapipe.LandmarksRefinementCalculatorOptions.ext] {
+      refinement {
+        indexes_mapping: 0
+        indexes_mapping: 1
+        indexes_mapping: 2
+        indexes_mapping: 3
+        indexes_mapping: 4
+        indexes_mapping: 5
+        indexes_mapping: 6
+        indexes_mapping: 7
+        indexes_mapping: 8
+        indexes_mapping: 9
+        indexes_mapping: 10
+        indexes_mapping: 11
+        indexes_mapping: 12
+        indexes_mapping: 13
+        indexes_mapping: 14
+        indexes_mapping: 15
+        indexes_mapping: 16
+        indexes_mapping: 17
+        indexes_mapping: 18
+        indexes_mapping: 19
+        indexes_mapping: 20
+        indexes_mapping: 21
+        indexes_mapping: 22
+        indexes_mapping: 23
+        indexes_mapping: 24
+        indexes_mapping: 25
+        indexes_mapping: 26
+        indexes_mapping: 27
+        indexes_mapping: 28
+        indexes_mapping: 29
+        indexes_mapping: 30
+        indexes_mapping: 31
+        indexes_mapping: 32
+        indexes_mapping: 33
+        indexes_mapping: 34
+        indexes_mapping: 35
+        indexes_mapping: 36
+        indexes_mapping: 37
+        indexes_mapping: 38
+        indexes_mapping: 39
+        indexes_mapping: 40
+        indexes_mapping: 41
+        indexes_mapping: 42
+        indexes_mapping: 43
+        indexes_mapping: 44
+        indexes_mapping: 45
+        indexes_mapping: 46
+        indexes_mapping: 47
+        indexes_mapping: 48
+        indexes_mapping: 49
+        indexes_mapping: 50
+        indexes_mapping: 51
+        indexes_mapping: 52
+        indexes_mapping: 53
+        indexes_mapping: 54
+        indexes_mapping: 55
+        indexes_mapping: 56
+        indexes_mapping: 57
+        indexes_mapping: 58
+        indexes_mapping: 59
+        indexes_mapping: 60
+        indexes_mapping: 61
+        indexes_mapping: 62
+        indexes_mapping: 63
+        indexes_mapping: 64
+        indexes_mapping: 65
+        indexes_mapping: 66
+        indexes_mapping: 67
+        indexes_mapping: 68
+        indexes_mapping: 69
+        indexes_mapping: 70
+        indexes_mapping: 71
+        indexes_mapping: 72
+        indexes_mapping: 73
+        indexes_mapping: 74
+        indexes_mapping: 75
+        indexes_mapping: 76
+        indexes_mapping: 77
+        indexes_mapping: 78
+        indexes_mapping: 79
+        indexes_mapping: 80
+        indexes_mapping: 81
+        indexes_mapping: 82
+        indexes_mapping: 83
+        indexes_mapping: 84
+        indexes_mapping: 85
+        indexes_mapping: 86
+        indexes_mapping: 87
+        indexes_mapping: 88
+        indexes_mapping: 89
+        indexes_mapping: 90
+        indexes_mapping: 91
+        indexes_mapping: 92
+        indexes_mapping: 93
+        indexes_mapping: 94
+        indexes_mapping: 95
+        indexes_mapping: 96
+        indexes_mapping: 97
+        indexes_mapping: 98
+        indexes_mapping: 99
+        indexes_mapping: 100
+        indexes_mapping: 101
+        indexes_mapping: 102
+        indexes_mapping: 103
+        indexes_mapping: 104
+        indexes_mapping: 105
+        indexes_mapping: 106
+        indexes_mapping: 107
+        indexes_mapping: 108
+        indexes_mapping: 109
+        indexes_mapping: 110
+        indexes_mapping: 111
+        indexes_mapping: 112
+        indexes_mapping: 113
+        indexes_mapping: 114
+        indexes_mapping: 115
+        indexes_mapping: 116
+        indexes_mapping: 117
+        indexes_mapping: 118
+        indexes_mapping: 119
+        indexes_mapping: 120
+        indexes_mapping: 121
+        indexes_mapping: 122
+        indexes_mapping: 123
+        indexes_mapping: 124
+        indexes_mapping: 125
+        indexes_mapping: 126
+        indexes_mapping: 127
+        indexes_mapping: 128
+        indexes_mapping: 129
+        indexes_mapping: 130
+        indexes_mapping: 131
+        indexes_mapping: 132
+        indexes_mapping: 133
+        indexes_mapping: 134
+        indexes_mapping: 135
+        indexes_mapping: 136
+        indexes_mapping: 137
+        indexes_mapping: 138
+        indexes_mapping: 139
+        indexes_mapping: 140
+        indexes_mapping: 141
+        indexes_mapping: 142
+        indexes_mapping: 143
+        indexes_mapping: 144
+        indexes_mapping: 145
+        indexes_mapping: 146
+        indexes_mapping: 147
+        indexes_mapping: 148
+        indexes_mapping: 149
+        indexes_mapping: 150
+        indexes_mapping: 151
+        indexes_mapping: 152
+        indexes_mapping: 153
+        indexes_mapping: 154
+        indexes_mapping: 155
+        indexes_mapping: 156
+        indexes_mapping: 157
+        indexes_mapping: 158
+        indexes_mapping: 159
+        indexes_mapping: 160
+        indexes_mapping: 161
+        indexes_mapping: 162
+        indexes_mapping: 163
+        indexes_mapping: 164
+        indexes_mapping: 165
+        indexes_mapping: 166
+        indexes_mapping: 167
+        indexes_mapping: 168
+        indexes_mapping: 169
+        indexes_mapping: 170
+        indexes_mapping: 171
+        indexes_mapping: 172
+        indexes_mapping: 173
+        indexes_mapping: 174
+        indexes_mapping: 175
+        indexes_mapping: 176
+        indexes_mapping: 177
+        indexes_mapping: 178
+        indexes_mapping: 179
+        indexes_mapping: 180
+        indexes_mapping: 181
+        indexes_mapping: 182
+        indexes_mapping: 183
+        indexes_mapping: 184
+        indexes_mapping: 185
+        indexes_mapping: 186
+        indexes_mapping: 187
+        indexes_mapping: 188
+        indexes_mapping: 189
+        indexes_mapping: 190
+        indexes_mapping: 191
+        indexes_mapping: 192
+        indexes_mapping: 193
+        indexes_mapping: 194
+        indexes_mapping: 195
+        indexes_mapping: 196
+        indexes_mapping: 197
+        indexes_mapping: 198
+        indexes_mapping: 199
+        indexes_mapping: 200
+        indexes_mapping: 201
+        indexes_mapping: 202
+        indexes_mapping: 203
+        indexes_mapping: 204
+        indexes_mapping: 205
+        indexes_mapping: 206
+        indexes_mapping: 207
+        indexes_mapping: 208
+        indexes_mapping: 209
+        indexes_mapping: 210
+        indexes_mapping: 211
+        indexes_mapping: 212
+        indexes_mapping: 213
+        indexes_mapping: 214
+        indexes_mapping: 215
+        indexes_mapping: 216
+        indexes_mapping: 217
+        indexes_mapping: 218
+        indexes_mapping: 219
+        indexes_mapping: 220
+        indexes_mapping: 221
+        indexes_mapping: 222
+        indexes_mapping: 223
+        indexes_mapping: 224
+        indexes_mapping: 225
+        indexes_mapping: 226
+        indexes_mapping: 227
+        indexes_mapping: 228
+        indexes_mapping: 229
+        indexes_mapping: 230
+        indexes_mapping: 231
+        indexes_mapping: 232
+        indexes_mapping: 233
+        indexes_mapping: 234
+        indexes_mapping: 235
+        indexes_mapping: 236
+        indexes_mapping: 237
+        indexes_mapping: 238
+        indexes_mapping: 239
+        indexes_mapping: 240
+        indexes_mapping: 241
+        indexes_mapping: 242
+        indexes_mapping: 243
+        indexes_mapping: 244
+        indexes_mapping: 245
+        indexes_mapping: 246
+        indexes_mapping: 247
+        indexes_mapping: 248
+        indexes_mapping: 249
+        indexes_mapping: 250
+        indexes_mapping: 251
+        indexes_mapping: 252
+        indexes_mapping: 253
+        indexes_mapping: 254
+        indexes_mapping: 255
+        indexes_mapping: 256
+        indexes_mapping: 257
+        indexes_mapping: 258
+        indexes_mapping: 259
+        indexes_mapping: 260
+        indexes_mapping: 261
+        indexes_mapping: 262
+        indexes_mapping: 263
+        indexes_mapping: 264
+        indexes_mapping: 265
+        indexes_mapping: 266
+        indexes_mapping: 267
+        indexes_mapping: 268
+        indexes_mapping: 269
+        indexes_mapping: 270
+        indexes_mapping: 271
+        indexes_mapping: 272
+        indexes_mapping: 273
+        indexes_mapping: 274
+        indexes_mapping: 275
+        indexes_mapping: 276
+        indexes_mapping: 277
+        indexes_mapping: 278
+        indexes_mapping: 279
+        indexes_mapping: 280
+        indexes_mapping: 281
+        indexes_mapping: 282
+        indexes_mapping: 283
+        indexes_mapping: 284
+        indexes_mapping: 285
+        indexes_mapping: 286
+        indexes_mapping: 287
+        indexes_mapping: 288
+        indexes_mapping: 289
+        indexes_mapping: 290
+        indexes_mapping: 291
+        indexes_mapping: 292
+        indexes_mapping: 293
+        indexes_mapping: 294
+        indexes_mapping: 295
+        indexes_mapping: 296
+        indexes_mapping: 297
+        indexes_mapping: 298
+        indexes_mapping: 299
+        indexes_mapping: 300
+        indexes_mapping: 301
+        indexes_mapping: 302
+        indexes_mapping: 303
+        indexes_mapping: 304
+        indexes_mapping: 305
+        indexes_mapping: 306
+        indexes_mapping: 307
+        indexes_mapping: 308
+        indexes_mapping: 309
+        indexes_mapping: 310
+        indexes_mapping: 311
+        indexes_mapping: 312
+        indexes_mapping: 313
+        indexes_mapping: 314
+        indexes_mapping: 315
+        indexes_mapping: 316
+        indexes_mapping: 317
+        indexes_mapping: 318
+        indexes_mapping: 319
+        indexes_mapping: 320
+        indexes_mapping: 321
+        indexes_mapping: 322
+        indexes_mapping: 323
+        indexes_mapping: 324
+        indexes_mapping: 325
+        indexes_mapping: 326
+        indexes_mapping: 327
+        indexes_mapping: 328
+        indexes_mapping: 329
+        indexes_mapping: 330
+        indexes_mapping: 331
+        indexes_mapping: 332
+        indexes_mapping: 333
+        indexes_mapping: 334
+        indexes_mapping: 335
+        indexes_mapping: 336
+        indexes_mapping: 337
+        indexes_mapping: 338
+        indexes_mapping: 339
+        indexes_mapping: 340
+        indexes_mapping: 341
+        indexes_mapping: 342
+        indexes_mapping: 343
+        indexes_mapping: 344
+        indexes_mapping: 345
+        indexes_mapping: 346
+        indexes_mapping: 347
+        indexes_mapping: 348
+        indexes_mapping: 349
+        indexes_mapping: 350
+        indexes_mapping: 351
+        indexes_mapping: 352
+        indexes_mapping: 353
+        indexes_mapping: 354
+        indexes_mapping: 355
+        indexes_mapping: 356
+        indexes_mapping: 357
+        indexes_mapping: 358
+        indexes_mapping: 359
+        indexes_mapping: 360
+        indexes_mapping: 361
+        indexes_mapping: 362
+        indexes_mapping: 363
+        indexes_mapping: 364
+        indexes_mapping: 365
+        indexes_mapping: 366
+        indexes_mapping: 367
+        indexes_mapping: 368
+        indexes_mapping: 369
+        indexes_mapping: 370
+        indexes_mapping: 371
+        indexes_mapping: 372
+        indexes_mapping: 373
+        indexes_mapping: 374
+        indexes_mapping: 375
+        indexes_mapping: 376
+        indexes_mapping: 377
+        indexes_mapping: 378
+        indexes_mapping: 379
+        indexes_mapping: 380
+        indexes_mapping: 381
+        indexes_mapping: 382
+        indexes_mapping: 383
+        indexes_mapping: 384
+        indexes_mapping: 385
+        indexes_mapping: 386
+        indexes_mapping: 387
+        indexes_mapping: 388
+        indexes_mapping: 389
+        indexes_mapping: 390
+        indexes_mapping: 391
+        indexes_mapping: 392
+        indexes_mapping: 393
+        indexes_mapping: 394
+        indexes_mapping: 395
+        indexes_mapping: 396
+        indexes_mapping: 397
+        indexes_mapping: 398
+        indexes_mapping: 399
+        indexes_mapping: 400
+        indexes_mapping: 401
+        indexes_mapping: 402
+        indexes_mapping: 403
+        indexes_mapping: 404
+        indexes_mapping: 405
+        indexes_mapping: 406
+        indexes_mapping: 407
+        indexes_mapping: 408
+        indexes_mapping: 409
+        indexes_mapping: 410
+        indexes_mapping: 411
+        indexes_mapping: 412
+        indexes_mapping: 413
+        indexes_mapping: 414
+        indexes_mapping: 415
+        indexes_mapping: 416
+        indexes_mapping: 417
+        indexes_mapping: 418
+        indexes_mapping: 419
+        indexes_mapping: 420
+        indexes_mapping: 421
+        indexes_mapping: 422
+        indexes_mapping: 423
+        indexes_mapping: 424
+        indexes_mapping: 425
+        indexes_mapping: 426
+        indexes_mapping: 427
+        indexes_mapping: 428
+        indexes_mapping: 429
+        indexes_mapping: 430
+        indexes_mapping: 431
+        indexes_mapping: 432
+        indexes_mapping: 433
+        indexes_mapping: 434
+        indexes_mapping: 435
+        indexes_mapping: 436
+        indexes_mapping: 437
+        indexes_mapping: 438
+        indexes_mapping: 439
+        indexes_mapping: 440
+        indexes_mapping: 441
+        indexes_mapping: 442
+        indexes_mapping: 443
+        indexes_mapping: 444
+        indexes_mapping: 445
+        indexes_mapping: 446
+        indexes_mapping: 447
+        indexes_mapping: 448
+        indexes_mapping: 449
+        indexes_mapping: 450
+        indexes_mapping: 451
+        indexes_mapping: 452
+        indexes_mapping: 453
+        indexes_mapping: 454
+        indexes_mapping: 455
+        indexes_mapping: 456
+        indexes_mapping: 457
+        indexes_mapping: 458
+        indexes_mapping: 459
+        indexes_mapping: 460
+        indexes_mapping: 461
+        indexes_mapping: 462
+        indexes_mapping: 463
+        indexes_mapping: 464
+        indexes_mapping: 465
+        indexes_mapping: 466
+        indexes_mapping: 467
+        z_refinement {
+          copy {
+          }
+        }
+      }
+      refinement {
+        indexes_mapping: 61
+        indexes_mapping: 146
+        indexes_mapping: 91
+        indexes_mapping: 181
+        indexes_mapping: 84
+        indexes_mapping: 17
+        indexes_mapping: 314
+        indexes_mapping: 405
+        indexes_mapping: 321
+        indexes_mapping: 375
+        indexes_mapping: 291
+        indexes_mapping: 185
+        indexes_mapping: 40
+        indexes_mapping: 39
+        indexes_mapping: 37
+        indexes_mapping: 0
+        indexes_mapping: 267
+        indexes_mapping: 269
+        indexes_mapping: 270
+        indexes_mapping: 409
+        indexes_mapping: 78
+        indexes_mapping: 95
+        indexes_mapping: 88
+        indexes_mapping: 178
+        indexes_mapping: 87
+        indexes_mapping: 14
+        indexes_mapping: 317
+        indexes_mapping: 402
+        indexes_mapping: 318
+        indexes_mapping: 324
+        indexes_mapping: 308
+        indexes_mapping: 191
+        indexes_mapping: 80
+        indexes_mapping: 81
+        indexes_mapping: 82
+        indexes_mapping: 13
+        indexes_mapping: 312
+        indexes_mapping: 311
+        indexes_mapping: 310
+        indexes_mapping: 415
+        indexes_mapping: 76
+        indexes_mapping: 77
+        indexes_mapping: 90
+        indexes_mapping: 180
+        indexes_mapping: 85
+        indexes_mapping: 16
+        indexes_mapping: 315
+        indexes_mapping: 404
+        indexes_mapping: 320
+        indexes_mapping: 307
+        indexes_mapping: 306
+        indexes_mapping: 184
+        indexes_mapping: 74
+        indexes_mapping: 73
+        indexes_mapping: 72
+        indexes_mapping: 11
+        indexes_mapping: 302
+        indexes_mapping: 303
+        indexes_mapping: 304
+        indexes_mapping: 408
+        indexes_mapping: 62
+        indexes_mapping: 96
+        indexes_mapping: 89
+        indexes_mapping: 179
+        indexes_mapping: 86
+        indexes_mapping: 15
+        indexes_mapping: 316
+        indexes_mapping: 403
+        indexes_mapping: 319
+        indexes_mapping: 325
+        indexes_mapping: 292
+        indexes_mapping: 183
+        indexes_mapping: 42
+        indexes_mapping: 41
+        indexes_mapping: 38
+        indexes_mapping: 12
+        indexes_mapping: 268
+        indexes_mapping: 271
+        indexes_mapping: 272
+        indexes_mapping: 407
+        z_refinement {
+          none {
+          }
+        }
+      }
+      refinement {
+        indexes_mapping: 33
+        indexes_mapping: 7
+        indexes_mapping: 163
+        indexes_mapping: 144
+        indexes_mapping: 145
+        indexes_mapping: 153
+        indexes_mapping: 154
+        indexes_mapping: 155
+        indexes_mapping: 133
+        indexes_mapping: 246
+        indexes_mapping: 161
+        indexes_mapping: 160
+        indexes_mapping: 159
+        indexes_mapping: 158
+        indexes_mapping: 157
+        indexes_mapping: 173
+        indexes_mapping: 130
+        indexes_mapping: 25
+        indexes_mapping: 110
+        indexes_mapping: 24
+        indexes_mapping: 23
+        indexes_mapping: 22
+        indexes_mapping: 26
+        indexes_mapping: 112
+        indexes_mapping: 243
+        indexes_mapping: 247
+        indexes_mapping: 30
+        indexes_mapping: 29
+        indexes_mapping: 27
+        indexes_mapping: 28
+        indexes_mapping: 56
+        indexes_mapping: 190
+        indexes_mapping: 226
+        indexes_mapping: 31
+        indexes_mapping: 228
+        indexes_mapping: 229
+        indexes_mapping: 230
+        indexes_mapping: 231
+        indexes_mapping: 232
+        indexes_mapping: 233
+        indexes_mapping: 244
+        indexes_mapping: 113
+        indexes_mapping: 225
+        indexes_mapping: 224
+        indexes_mapping: 223
+        indexes_mapping: 222
+        indexes_mapping: 221
+        indexes_mapping: 189
+        indexes_mapping: 35
+        indexes_mapping: 124
+        indexes_mapping: 46
+        indexes_mapping: 53
+        indexes_mapping: 52
+        indexes_mapping: 65
+        indexes_mapping: 143
+        indexes_mapping: 111
+        indexes_mapping: 117
+        indexes_mapping: 118
+        indexes_mapping: 119
+        indexes_mapping: 120
+        indexes_mapping: 121
+        indexes_mapping: 128
+        indexes_mapping: 245
+        indexes_mapping: 156
+        indexes_mapping: 70
+        indexes_mapping: 63
+        indexes_mapping: 105
+        indexes_mapping: 66
+        indexes_mapping: 107
+        indexes_mapping: 55
+        indexes_mapping: 193
+        z_refinement {
+          none {
+          }
+        }
+      }
+      refinement {
+        indexes_mapping: 263
+        indexes_mapping: 249
+        indexes_mapping: 390
+        indexes_mapping: 373
+        indexes_mapping: 374
+        indexes_mapping: 380
+        indexes_mapping: 381
+        indexes_mapping: 382
+        indexes_mapping: 362
+        indexes_mapping: 466
+        indexes_mapping: 388
+        indexes_mapping: 387
+        indexes_mapping: 386
+        indexes_mapping: 385
+        indexes_mapping: 384
+        indexes_mapping: 398
+        indexes_mapping: 359
+        indexes_mapping: 255
+        indexes_mapping: 339
+        indexes_mapping: 254
+        indexes_mapping: 253
+        indexes_mapping: 252
+        indexes_mapping: 256
+        indexes_mapping: 341
+        indexes_mapping: 463
+        indexes_mapping: 467
+        indexes_mapping: 260
+        indexes_mapping: 259
+        indexes_mapping: 257
+        indexes_mapping: 258
+        indexes_mapping: 286
+        indexes_mapping: 414
+        indexes_mapping: 446
+        indexes_mapping: 261
+        indexes_mapping: 448
+        indexes_mapping: 449
+        indexes_mapping: 450
+        indexes_mapping: 451
+        indexes_mapping: 452
+        indexes_mapping: 453
+        indexes_mapping: 464
+        indexes_mapping: 342
+        indexes_mapping: 445
+        indexes_mapping: 444
+        indexes_mapping: 443
+        indexes_mapping: 442
+        indexes_mapping: 441
+        indexes_mapping: 413
+        indexes_mapping: 265
+        indexes_mapping: 353
+        indexes_mapping: 276
+        indexes_mapping: 283
+        indexes_mapping: 282
+        indexes_mapping: 295
+        indexes_mapping: 372
+        indexes_mapping: 340
+        indexes_mapping: 346
+        indexes_mapping: 347
+        indexes_mapping: 348
+        indexes_mapping: 349
+        indexes_mapping: 350
+        indexes_mapping: 357
+        indexes_mapping: 465
+        indexes_mapping: 383
+        indexes_mapping: 300
+        indexes_mapping: 293
+        indexes_mapping: 334
+        indexes_mapping: 296
+        indexes_mapping: 336
+        indexes_mapping: 285
+        indexes_mapping: 417
+        z_refinement {
+          none {
+          }
+        }
+      }
+      refinement {
+        indexes_mapping: 468
+        indexes_mapping: 469
+        indexes_mapping: 470
+        indexes_mapping: 471
+        indexes_mapping: 472
+        z_refinement {
+          assign_average {
+            indexes_for_average: 33
+            indexes_for_average: 7
+            indexes_for_average: 163
+            indexes_for_average: 144
+            indexes_for_average: 145
+            indexes_for_average: 153
+            indexes_for_average: 154
+            indexes_for_average: 155
+            indexes_for_average: 133
+            indexes_for_average: 246
+            indexes_for_average: 161
+            indexes_for_average: 160
+            indexes_for_average: 159
+            indexes_for_average: 158
+            indexes_for_average: 157
+            indexes_for_average: 173
+          }
+        }
+      }
+      refinement {
+        indexes_mapping: 473
+        indexes_mapping: 474
+        indexes_mapping: 475
+        indexes_mapping: 476
+        indexes_mapping: 477
+        z_refinement {
+          assign_average {
+            indexes_for_average: 263
+            indexes_for_average: 249
+            indexes_for_average: 390
+            indexes_for_average: 373
+            indexes_for_average: 374
+            indexes_for_average: 380
+            indexes_for_average: 381
+            indexes_for_average: 382
+            indexes_for_average: 362
+            indexes_for_average: 466
+            indexes_for_average: 388
+            indexes_for_average: 387
+            indexes_for_average: 386
+            indexes_for_average: 385
+            indexes_for_average: 384
+            indexes_for_average: 398
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__switchcontainer_2__SwitchMuxCalculator"
+  calculator: "SwitchMuxCalculator"
+  input_stream: "C0__LANDMARKS:facelandmarkcpu__switchcontainer_2__c0__faceland
+markcpu__landmarks"
+  input_stream: "C1__LANDMARKS:facelandmarkcpu__switchcontainer_2__c1__faceland
+markcpu__landmarks"
+  output_stream: "LANDMARKS:facelandmarkcpu__landmarks"
+  input_side_packet: "ENABLE:with_attention"
+  options {
+    [mediapipe.SwitchContainerOptions.ext] {
+    }
+  }
+}
+node {
+  name: "facelandmarkcpu__LandmarkProjectionCalculator"
+  calculator: "LandmarkProjectionCalculator"
+  input_stream: "NORM_LANDMARKS:facelandmarkcpu__landmarks"
+  input_stream: "NORM_RECT:face_rect"
+  output_stream: "NORM_LANDMARKS:face_landmarks"
+}
+node {
+  calculator: "EndLoopNormalizedLandmarkListVectorCalculator"
+  input_stream: "ITEM:face_landmarks"
+  input_stream: "BATCH_END:landmarks_loop_end_timestamp"
+  output_stream: "ITERABLE:multi_face_landmarks"
+}
+node {
+  name: "facelandmarklandmarkstoroi__LandmarksToDetectionCalculator"
+  calculator: "LandmarksToDetectionCalculator"
+  input_stream: "NORM_LANDMARKS:face_landmarks"
+  output_stream: "DETECTION:facelandmarklandmarkstoroi__face_detection"
+}
+node {
+  name: "facelandmarklandmarkstoroi__DetectionsToRectsCalculator"
+  calculator: "DetectionsToRectsCalculator"
+  input_stream: "DETECTION:facelandmarklandmarkstoroi__face_detection"
+  input_stream: "IMAGE_SIZE:landmarks_loop_image_size"
+  output_stream: 
+"NORM_RECT:facelandmarklandmarkstoroi__face_rect_from_landmarks"
+  options {
+    [mediapipe.DetectionsToRectsCalculatorOptions.ext] {
+      rotation_vector_start_keypoint_index: 33
+      rotation_vector_end_keypoint_index: 263
+      rotation_vector_target_angle_degrees: 0
+    }
+  }
+}
+node {
+  name: "facelandmarklandmarkstoroi__RectTransformationCalculator"
+  calculator: "RectTransformationCalculator"
+  input_stream: 
+"NORM_RECT:facelandmarklandmarkstoroi__face_rect_from_landmarks"
+  input_stream: "IMAGE_SIZE:landmarks_loop_image_size"
+  output_stream: "face_rect_from_landmarks"
+  options {
+    [mediapipe.RectTransformationCalculatorOptions.ext] {
+      scale_x: 1.5
+      scale_y: 1.5
+      square_long: true
+    }
+  }
+}
+node {
+  calculator: "EndLoopNormalizedRectCalculator"
+  input_stream: "ITEM:face_rect_from_landmarks"
+  input_stream: "BATCH_END:landmarks_loop_end_timestamp"
+  output_stream: "ITERABLE:face_rects_from_landmarks"
+}
+input_stream: "IMAGE:image"
+executor {
+}
+output_stream: "LANDMARKS:multi_face_landmarks"
+output_stream: "DETECTIONS:face_detections"
+output_stream: "ROIS_FROM_LANDMARKS:face_rects_from_landmarks"
+output_stream: "ROIS_FROM_DETECTIONS:face_rects_from_detections"
+input_side_packet: "NUM_FACES:num_faces"
+input_side_packet: "USE_PREV_LANDMARKS:use_prev_landmarks"
+input_side_packet: "WITH_ATTENTION:with_attention"
+type: "FaceLandmarkFrontCpu"
+

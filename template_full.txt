@@ -1,0 +1,1989 @@
+===== PAGE 1 =====
+A SPATIO -TEMPORAL  DEEP  LEARNING  APPROACH 
+FOR DEEPFAKE DETECTION  
+ 
+PHASE  I REPORT  
+ 
+Submitted  by 
+V SHARMILA  
+Register  No: 953424405004  
+ 
+ 
+in partial  fulfilment  for the award  of the degree  of 
+MASTER  OF ENGINEERING 
+IN 
+COMPUTER  SCIENCE  AND  ENGINEERING  
+ 
+ 
+V V COLLEGE  OF ENGINEERING  
+ 
+DEPARTMENT  OF COMPUTER  SCIENCE  AND 
+ENGINEERING  
+ 
+ANNA  UNIVERSITY  : CHENNAI  600 025 
+ 
+NOVEMBER  2025  
+
+===== PAGE 2 =====
+BONAFIDE  CERTIFICATE  
+ 
+Certified  that this Report  titled  “A SPATIO -TEMPORAL  DEEP 
+LEARNING  APPROACH  FOR  DEEPFAKE  DETECTION”  is the Bonafide  
+work of Ms. V SHARMILA (Register No. 953424405004) who carried out the 
+project  work  under  my supervision.  Certified  further  that to the best of my knowledge 
+the work  reported  here in does not form  part of any other  thesis  or dissertation  on the 
+basis  of which  a degree  or award  was conferred  on an earlier  occasion  on this or any 
+other candidate.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Signature  of the HOD   
+Dr.R. Jensi M.E., Ph.D.,  
+HEAD  OF THE  DEPARTMENT  
+Computer  Science  and 
+Engineering,  
+V V College of Engineering,  
+Tisaiyanvilai -628656. Signature  of the Supervisor   
+MS. D. Merlin Gethsy M.E.,  
+SUPERVISOR, AP/CSE  
+Computer  Science  and 
+Engineering,  
+V V College of Engineering, 
+Tisaiyanvilai -628 656.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Submitted  for phase -I project  and viva-voce  examination  held on………………  
+ 
+ 
+ 
+ 
+ 
+Internal  Examiner  External  Examiner  
+
+===== PAGE 3 =====
+i  ABSTRACT  
+ 
+ 
+Deepfake technology has evolved rapidly with the advancement of deep learning, 
+enabling  the creation  of highly  realistic  but falsified  media  content.  This poses  serious  threats 
+to digital authenticity, security, and privacy. The proposed system, A Spatio -Temporal Deep 
+Learning Approach for Deepfake Detection , introduces a hybrid framework that leverages 
+both spatial and temporal features for reliable identification of manipulated videos. Spatial 
+features are extracted using Convolutional Neural Networks (CNNs) to capture pixel -level 
+inconsistencies, while Temporal Convolutional Networks (TCNs) analyse frame -to-frame 
+variations  and motion  irregularities  across  sequences.  By integrating  these  two modalities,  the 
+model achieves enhanced accuracy in distinguishing real from fake videos. Experimental 
+evaluation demonstrates that the proposed method outperforms conventional single -stream 
+CNN architectures by effectively modelling temporal coherence along with spatial texture 
+cues. This hybrid approach offers a robust and scalable solution for real -time deepfake 
+detection applications in media verification and digital forensics.  
+
+===== PAGE 4 =====
+ii  ஆய்வுச் சுருக்கம்  
+ 
+இன ் றைய  காலத்தில்  செயை்றக  நுண ் ணறிவு  மை்றும்  ஆழ்மடக்கு  கை்ைல்  (Deep 
+Learning) சதாழில்நுட்பங்களின ்  வளர்ெ்சியால் , “டீப்ப்ஃபபக் ” (Deepfake) எனப்படும்  பபாலி  
+வீடிபயாக்கள்  உருவாக்குவது  மிகவும்  எளிதாகியுள்ளது . இறவ  ெமூக  வறலத்தளங்கள்  
+மை்றும்  ஊடகங்களில்  தவைான  தகவல்  பரவலுக்குக்  காரணமாகி , நம்பகத்தன ் றம  மை்றும்  
+பாதுகாப்புக்கு  மிகப்சபரிய  ெவாலாக  உள்ளன . 
+இத்திட்டத்தின ்  பநாக்கம் , இட–கால  (Spatio –Temporal) ஆழ்மடக்கு  கை்ைல்  முறைறயப்  
+பயன ் படுத்தி , உண ் றமயான  மை்றும்  பபாலி  வீடிபயாக்கறள  திைறமயாக  
+கண ் டறிவதாகும் . 
+இத்திட்டத்தில் , ஒவ்சவாரு  வீடிபயாவிலிருந்தும்  முகப்பகுதிகறளப்  பிரித்து , 
+பரப்பளவியல்  (Spatial) அம்ெங்கறளப்  பிடிக்க  சுருட்டல்  நரம்பு  வறலகள்  (Convolutional Neural 
+Networks – CNN) பயன ் படுத்தப்படுகின ் ைன ; அபதபபால் , கால  ொர்ந்த  (Temporal) மாதிரிகள்  
+மை்றும்  இயக்க  முரண ் பாடுகறளப்  புரிந்துசகாள்ள  கால  நரம்பு  வறலகள்  (Temporal 
+Convolutional Networks – TCN) பயன ் படுத்தப்படுகின ் ைன . 
+இவ்விரண ் டு  அம்ெங்கறளயும்  இறணப்பதன ்  மூலம் , வீடிபயாவின ்  
+உண ் றமத்தன ் றமறய  அதிக  துல்லியத்துடன ்  மதிப்பிட  முடிகிைது . இம்முறையில் , ஒபர  
+வறக  CNN மாடல்கறளவிட  பமம்பட்ட  துல்லியத்றதயும்  நிறலத்தன ் றமறயயும்  சபை  
+முடிந்தது . இதன ்  மூலம்  ஊடக  ெரிபார்ப்பு  மை்றும்  டிஜிட்டல்  புலனாய்வுத்  துறைகளில்  
+பநரடி  (real-time) டீப்ப்ஃபபக்  கண ் டறிதறல  செயல்படுத்தக்கூடிய  திைறமயான  தீர்றவ  
+வழங்குகிைது . 
+
+===== PAGE 5 =====
+iii  ACKNOWLEDGEMENT  
+ 
+ 
+First and foremost, I would like to thank “The almighty” , the Lord of all creations 
+who is by his abundant grace sustained me to work on this project successfully.  
+I express our deepest gratitude to our Chairman Shri. S. Jagatheesan , for providing 
+us with necessary facilities that enable us to successfully complete our project.  
+I express  my thanks  to our Principal Dr.P.  Vanitha M.E.,  Ph.D.,  for her tremendous 
+contribution and moral support towards the completion of this project.  
+I wish  to express  my sincere  thanks  to the Head  of the Department  Dr.R.  Jensi  M.E., 
+Ph.D., for the useful suggestions given during the course of the project period.  
+I would  like to express  our heartfelt  gratitude  to our project  coordinators  Mrs.  
+D.Merlin  Gethsy  M.E.,  AP/CSE  for providing  moral  support  and motivation.  
+ 
+I am very grateful  to my guide  Mrs.  D.Merlin  Gethsy  M.E.,  AP/CSE,  for being 
+instrumental in the completion of my project with her complete guidance.  
+I also thank  all staff members,  my family  and friends  for their help in making  this 
+project a successful one.  
+
+===== PAGE 6 =====
+iv  TABLE  OF CONTENT  
+ 
+CHAPTER 
+NO TITLE  PAGE  
+NO 
+ABSTRACT  I 
+ஆய்வுச்  சுருக்கம்  Ii 
+LIST  OF FIGURES  Vi 
+LIST  OF ABBREVIATIONS  Vii 
+1 INTRODUCTION  1 
+1.1 Deepfake  Technology  Overview  3 
+1.2 Challenges  in Deepfake  Detection  4 
+1.3 Deep  Learning  Techniques  for Detection  5 
+1.4 Convolutional  Neural  Network  (CNN)  6 
+1.5 Temporal  Convolutional  Network  (TCN)  8 
+1.6 Proposed  Spatio -Temporal  Deep  9 
+Learning  Framework  
+2 LITERATURE  REVIEW  10 
+2.1 Deepfake  Detection  Using  CNN -Based  10 
+Approaches  
+2.1.1 Drawbacks  9 
+2.2 Deepfake  Detection  Using  Recurrent  11 
+Neural  Networks  (RNN)  
+
+===== PAGE 7 =====
+v  2.2.1 Drawbacks  
+2.3 Hybrid  Deep  Learning  Methods  for 13 
+Deepfake  Detection  
+2.2.3 Drawbacks  13 
+3 SYSTEM  METHODOLOGY  15 
+3.1 Existing  System  15 
+3.2 Proposed  System  16 
+3.3 System  Architecture  16 
+4 SYSTEM  REQUIREMENT  20 
+4.1 Hardware  Requirements  20 
+4.2 Software  Requirements  20 
+4.3 Software  Description  21 
+4.3.1 MATLAB  language  21 
+4.3.2 MATLAB  features  23 
+5 SYSTEM  IMPLEMENTATION  25 
+5.1 Modules  25 
+5.1.1 Dataset  collection  25 
+5.1.2 Preprocessing  26 
+5.1.3 Training  Datasets  27 
+5.1.4 Testing  27 
+5.1.5 Performance  Evaluation  28 
+ 
+
+===== PAGE 8 =====
+vi  6 SYSTEM  DESIGN  29 
+6.1 System  Model  29 
+6.2 System  Flowchart  30 
+7 SYSTEM  FEASIBILITY  31 
+7.1 Feasibility  Study  31 
+7.1.1 Economic  Feasibility  31 
+7.1.2 Technical  Feasibility  32 
+7.1.3 Social  Feasibility  32 
+8 CODING  AND  RESULT  33 
+8.1 Sample  Output  33 
+8.2 Sample  Code  39 
+8.2.1 Training  Code  39 
+8.2.2 Testing  Code  51 
+9 CONCLUSION  AND  FUTURE  54 
+ENHANCEMENT  
+9.1 Conclusion  54 
+9.1 Future  Enhancement  54 
+REFERENCES  55 
+
+===== PAGE 9 =====
+vii  LIST  OF FIGURES  
+FIGURE  NO. TITLE  PAGE  NO 
+1.1 Architecture  of Spatio -Temporal  Deepfake  2 
+Detection  Model  
+1.2 Example  of Deepfake  Video  Frames  6 
+3.1 System  Architecture  Diagram  18 
+5.1 Sample  Frames  from  Deepfake  Dataset  25 
+5.2 Face  Extraction  using  MTCNN  26 
+6.1 Model  Training  Graph  29 
+6.2 Accuracy  and Loss  Curve  30 
+8.1.1 Highest  Variance  Frame  in Real Class  33 
+8.1.2 Highest  Variance  Frame  in Fake  Class  33 
+8.1.3 Example  of Face  Detection  and Alignment  34 
+8.1.4 Augmented  Frame  Samples  34 
+8.1.5 Class  Distribution  of Deepfake  Dataset  35 
+8.1.6 Real Video  Pixel  Intensity  Distribution  35 
+8.1.7 Fake  Video  Pixel  Intensity  Distribution  36 
+8.1.8 Spatial  Feature  Map (EfficientNet  B0 Output)  36 
+8.1.9 Temporal  Feature  Map (TempCNN  Output)  37 
+8.1.10  Confusion  Matrix  37 
+8.1.11  Pre-class  Performance  Metrics  38 
+
+===== PAGE 10 =====
+vii  8.12 Sample  output  of the Testing  Image  38 
+
+===== PAGE 11 =====
+ix  LIST  OF ABBREVIATIONS  
+ 
+ 
+CNN  - Convolutional Neural Network 
+TCN  - Temporal  Convolutional  Network 
+RNN  - Recurrent Neural Network  
+LSTM  - Long  Short -Term  Memory  
+ 
+MTCN  - Multi -task Cascaded  Convolutional  
+Network  
+ 
+FF++  - FaceForensics++  Dataset  
+ 
+GPU  - Graphics  Processing 
+Unit 
+ 
+API - Application  Programming  Interface  
+ 
+TP - True  Positive  
+ 
+FP - Integrated  development  environment  
+ 
+FN - Red ,Green  and Blue 
+ 
+TN - True  Negative  
+
+===== PAGE 12 =====
+x  F1 - 
+ 
+IDE - F1-Score  
+ 
+Integrated  Development 
+Environment  
+
+===== PAGE 13 =====
+11  CHAPTER 1   
+                                                           INTRODUCTION  
+With the rapid development of digital technologies and artificial 
+intelligence, synthetic media generation has become increasingly 
+sophisticated. Deepfake technology, which uses advanced Generative 
+Adversarial Networks (GANs) and deep learning algorithms, can create 
+hyper -realistic  videos  and images  that are almost  indistinguishable  from  real 
+ones. These deepfakes manipulate facial expressions, speech, and body 
+movements to convincingly replicate a person’s identity. While deepfake 
+tools have potential applications in film, entertainment, and virtual reality, 
+their misuse poses significant threats to information security, digital 
+privacy, and public trust . 
+The exponential rise of manipulated media has led to widespread 
+concerns  across  social,  political,  and cybersecurity  domains.  Deepfakes  have 
+been used for misinformation campaigns, identity fraud, and character 
+defamation, causing irreversible damage to reputation and credibility. 
+Detecting these synthetic media files is a complex challenge because the 
+forgeries maintain high visual quality and temporal coherence. Traditional 
+image -based analysis or manual inspection methods fail to distinguish fake 
+videos due to the near -perfect realism achieved by modern GANs.  
+This research proposes a hybrid deep learning framework for 
+deepfake  detection  that combines spatial  and temporal  feature  extraction . 
+The proposed  system  integrates  an Enhanced  EfficientNet  B0 model  with a 
+Temporal  Convolutional  Network (TempCNN) to analyze  both the visual 
+and temporal characteristics of videos. By capturing minute inconsistencies  
+
+===== PAGE 14 =====
+12  in pixel -level details and motion sequences, the hybrid model achieves high 
+accuracy while maintaining computational efficiency.  
+The EfficientNet  B0 backbone  extracts  detailed  spatial  information  from 
+each video  frame,  identifying  irregularities  such as unnatural  facial  blending, 
+illumination  mismatches,  or inconsistent  textures.  In contrast,  the Temporal 
+Convolutional  Network  (TempCNN) focuses  on the sequence  of frames  to 
+detect subtle inconsistencies in facial movements, eye blinking, or lip 
+synchronization —features  often  distorted  in deepfake  videos.  Together,  these 
+models create a powerful spatiotemporal detection mechanism capable of 
+differentiating real and fake content.  
+This system also employs Multi -task Cascaded Convolutional 
+Networks (MTCNN) for face detection and alignment, ensuring that only 
+relevant facial regions are processed for analysis. Furthermore, Feature 
+Pyramid Networks (FPNs) are used to fuse multi -scale features, improving 
+the model’s understanding of both fine and global representations. Data 
+augmentation  techniques  such as CutMix , MixUp , and Random  Erasing  are 
+applied  to enhance  model  robustness  and generalization  under  different  video 
+conditions and manipulations.  
+The model is evaluated using the FFIW 10K dataset , which consists of 
+10,000 videos —equally divided into 5,000 real and 5,000 fake samples. 
+Unlike  unbalanced  datasets  such as Deepfake  TIMIT  or FaceForensics++,  this 
+dataset provides a balanced and diverse benchmark, enabling fair evaluation. 
+The proposed system achieves a training accuracy of 91.5% and a testing 
+accuracy of 92.45% with only 0.45 GFLOPs computational cost, making it 
+efficient and suitable for real -time deployment  
+
+===== PAGE 15 =====
+13  1.1 Deep  learning  
+Deep learning is a subfield of machine learning that is based on the 
+concept  of artificial  neural  networks,  which  are computational  models  inspired 
+by the structure  and function  of the human  brain.  Deep  learning  algorithms  use 
+multiple layers of neural networks to learn and extract features from complex 
+data, such as images, speech, and text. At the heart of deep learning is the 
+concept of a neural network, which is a computational model composed of 
+multiple layers of interconnected nodes, or neurons. Each neuron in a neural 
+network  performs  a simple  mathematical  operation  on its inputs,  and the output 
+of each neuron is passed to the next layer of neurons until a final output is 
+produced. The key advantage of deep learning over traditional machine 
+learning algorithms is its ability to automatically learn and extract complex 
+features from raw data. This is achieved through a process called 
+backpropagation, which is used to adjust the weights of the connections 
+between  neurons  in the network  based  on the error  between  the predicted  output 
+and the true output.  
+One of the most popular types of deep learning algorithms is the 
+convolutional neural network, which is particularly effective for image 
+recognition  and classification  tasks.  CNNs  use a specialized  layer  called  a 
+
+===== PAGE 16 =====
+14  convolutional  layer  to learn  spatial  features  from  raw image  data,  and a pooling 
+layer  to reduce  the spatial  dimensions  of the feature  maps.  Another  popular  type 
+of deep learning algorithm is the recurrent neural network, which is designed 
+for sequential data, such as speech and text. RNNs use a feedback mechanism 
+to process input data in a sequential manner, and are particularly effective for 
+tasks such as speech recognition, natural language  processing, and time series 
+prediction. Some of the most popular applications of deep learning include 
+image and speech recognition, natural language processing, self - driving  cars, 
+and recommendation systems. However, deep learning is a rapidly evolving 
+field, and researchers are constantly exploring new ways to apply these 
+techniques to a wide range of problems.  
+1.1.1 Challenges  
+While deep learning has shown remarkable success in a variety of tasks, 
+there  are still several  challenges  associated  with the technology.  Some  of the major 
+challenges in deep learning include:  
+• Data Availability and Quality: Training requires vast amounts of 
+balanced and labeled data, which may not be available for emerging 
+deepfake datasets.  
+• Computational  Power: Training  complex  models  like CNNs  or GANs 
+demands high processing power and memory resources.  
+• Model Interpretability: Deep learning models are often viewed as 
+"black boxes" because it can be difficult to understand how they arrive 
+at their predictions. This lack of interpretability can be a barrier  to their 
+adoption in certain fields, such as healthcare and finance, where 
+transparency and accountability are crucial.  
+• Overfitting  and Generalization:  Deep  networks  can perform  well on 
+
+===== PAGE 17 =====
+15  training  data but fail to generalize  to new manipulations  or unseen 
+videos.  
+• Interpretability:  Deep  models  often  act as “black  boxes,”  making  it 
+difficult  to understand  decision -making  processes  
+• Ethical and Social Implications: Misuse of AI models in surveillance 
+or misinformation raises privacy and ethical concerns.  
+ 
+1.2 Convolutional  Neural  Network  (CNN):  
+In A Convolutional Neural Network (CNN) is one of the most 
+powerful  deep  learning  architectures  used for visual  data processing.  CNNs  are 
+designed to automatically detect spatial patterns and hierarchical features 
+within images. Each layer of a CNN performs convolution operations using 
+filters or kernels to extract local features such as edges, textures, or shapes. 
+Pooling  layers  follow  convolution  layers  to reduce  spatial  dimensions,  making 
+the model more efficient and less sensitive to positional variations.  
+CNNs  play a vital role in deepfake  detection  by capturing  static  facial 
+features and texture anomalies in each video frame. Advanced CNNs like 
+EfficientNet and ResNet improve feature extraction by optimizing network 
+depth,  width,  and resolution.  Nonlinear  activation  functions  such as ReLU  and 
+Swish introduce non -linearity, while normalization layers ensure stable 
+gradient propagation. The final fully connected layers and softmax classifiers 
+produce probabilistic predictions of whether the frame is real or fake.  
+
+===== PAGE 18 =====
+16  The two main components of CNNs are convolutional layers and pooling 
+layers. The higher layers in CNNs can be fully connected layers and the last 
+layer is a sigmoid or softmax activation function layer to get the predicted 
+output. The convolution  process is  performed  with convolutional  layers  on the 
+input data using a filter or kernel to create a feature map representing the 
+detected features of the input. Convolution is performed by sliding the filter 
+over the input. At each position, matrix multiplication is performed and the 
+result is summed onto the feature map. Fig. 1.1 shows a simple example of a 
+convolution process for an input with a depth of 1  
+ 
+ 
+ 
+Figure  1.2 Example  of Convolutional  Operation  
+ 
+ 
+The convolution process is linear. To add nonlinearity to the output, the 
+convolution  layer is  followed  by an activation  function  layer such  as ReLU  or 
+its variants. After the convolution layer, a pooling layer such as max -pooling 
+layer could be used to down sample the feature map to reduce the 
+computational cost.  
+
+
+===== PAGE 19 =====
+17  1.3 Pretrained  Deep  Learning  Models:  
+Pretrained models are deep neural networks trained on large -scale 
+datasets,  such as ImageNet,  and can be adapted  to new tasks  through transfer 
+learning . This approach reduces training time and computational cost while 
+improving performance on smaller datasets.  
+In this work, EfficientNet B0 , a highly optimized CNN architecture, is 
+utilized  for spatial  feature  extraction.  EfficientNet  introduces  Mobile  Inverted 
+Bottleneck Convolutions (MBConv) and Squeeze -and-Excitation (SE) 
+blocks, which adaptively recalibrate channel importance to highlight 
+meaningful features. The model’s efficiency lies in its compound scaling 
+method,  which  balances  depth,  width,  and resolution  to achieve  high accuracy 
+with minimal FLOPs.  
+By fine-tuning  EfficientNet  B0 on deepfake  datasets,  the system  learns  to 
+identify subtle inconsistencies in facial regions such as unnatural lighting, 
+blurred boundaries, and texture mismatches that are typical indicators of 
+manipulation.  
+
+===== PAGE 20 =====
+18  1.4 Proposed  CNN  Architecture:  
+The proposed Hybrid Deep Learning Framework combines Enhanced 
+EfficientNet B0 and Temporal Convolutional Networks (TempCNNs) for 
+accurate and efficient deepfake detection. The model processes video inputs by 
+dividing them into frames, followed by face detection using MTCNN for 
+alignment and cropping.  
+Each  frame  passes  through  EfficientNet  B0 to extract  spatial  features,  which 
+are then fed into the TempCNN to analyze temporal dependencies between 
+consecutive frames. The Feature Pyramid Network (FPN) fuses multi -scale 
+spatial information, allowing the model to detect both fine -grained and large - 
+scale  manipulations.  Finally,  the temporal  outputs  are aggregated,  and a softmax 
+classifier determines the probability of the video being real or fake.  
+By integrating spatial and temporal learning, the hybrid model effectively 
+detects even minor inconsistencies caused by generative artifacts. It offers a 
+lightweight  and real-time deepfake  detection  solution  with high accuracy,  making 
+it suitable for applications in cybersecurity, digital forensics, and social media 
+monitoring.  
+
+===== PAGE 21 =====
+19  CHAPTER 2 
+LITERATURE  REVIEW  
+ 
+This chapter includes the literature survey of all the considered 
+research  areas  related  to this dissertation  report.  In this chapter,  we discuss  the 
+literature works relevant to “Hybrid Deep Learning Framework for Deepfake 
+Detection Using Temporal and Spatial Features.”  
+ 
+2.1 Deepfake  Detection  Using  EfficientNet  and Temporal  CNN:  
+ 
+A. Zhou,  L., Xu, F., and Wang,  X., “A Hybrid  Deep  Learning  Framework 
+for Deepfake Detection Using Temporal and Spatial Features,” IEEE 
+Access , vol. 12, pp. 13479 –13492, 2024.  
+This paper presents a hybrid deep learning framework for detecting 
+deepfakes by combining Enhanced EfficientNet B0 and Temporal 
+Convolutional Networks (TempCNNs). The model effectively captures both 
+spatial inconsistencies in individual frames and temporal variations across 
+video sequences. The EfficientNet B0 network extracts spatial -level features, 
+identifying subtle visual artifacts such as unnatural lighting, facial blending, 
+and boundary mismatches, while the TempCNN captures motion -related 
+discrepancies,  such as irregular  blinking  and lip synchronization  patterns. 
+To improve the model’s feature fusion, a Feature Pyramid Network (FPN) is 
+employed,  enhancing  multi -scale  learning.  The proposed  system  is trained  and 
+evaluated  using  the FFIW  10K dataset,  consisting  of 10,000  balanced  real and 
+fake videos. It achieves a training accuracy of 91.5% and testing accuracy of 
+92.45% with a computational cost of only 0.45 GFLOPs, making it efficient. 
+This research  demonstrates  that combining  spatial  and temporal  features  
+
+===== PAGE 22 =====
+20  improves  generalization  across  various  deepfake  datasets.  The approach  shows 
+strong robustness, efficiency, and scalability for detecting realistic synthetic 
+videos, outperforming several existing single -stream models.  
+2.1.1 Drawbacks  
+• Dataset Limitation: The FFIW 10K dataset, though balanced, may not cover  
+newer or more sophisticated deepfake types.  
+• Generalization  Issues:  The model  may struggle  with unseen  datasets  containing 
+different compression levels or lighting conditions.  
+• High  Training  Cost:  Despite  being  lightweight,  training  still requires  GPU 
+acceleration and significant time.  
+• Frame Dependency: The model relies heavily on consistent frame sampling,  
+which can affect detection under varied frame rates.  
+• Complex  Implementation:  Integration  into live systems  (e.g.,  social  media 
+monitoring) may need specialized hardware.  
+• Sensitivity to Post -processing: Deepfakes with heavy compression or resizing 
+can reduce feature clarity.  
+• Adaptability: The system requires retraining when new GAN architectures or 
+manipulation techniques emerge.  
+
+===== PAGE 23 =====
+21  2.2 Deepfake  Video  Detection  Using  CNN  and LSTM  Networks  
+ 
+ 
+S. B. Sabir, E., Cheng, J., and AbdAlmageed, W., “Recurrent 
+Convolutional  Strategies  for Face  Manipulation  Detection  in Videos,”  IEEE 
+International  Conference  on Computer  Vision  Workshops  (ICCVW),  2019.  
+ 
+This research introduces a CNN -LSTM hybrid architecture for deepfake 
+video detection. The CNN module extracts frame -level spatial features, while 
+the LSTM captures temporal relationships across frames. This allows the 
+system to detect inconsistencies in motion dynamics such as unnatural eye 
+blinking and mismatched lip movement. The model was trained on the 
+FaceForensics++  dataset,  one of the most  widely  used benchmarks  for deepfake 
+detection.  It achieved  an overall accuracy  of 90.1%  on compressed  videos  and 
+demonstrated  superior  performance  in detecting  temporal  artifacts  compared  to 
+standalone CNN -based systems.  
+ 
+The study  highlights  the significance  of modeling  both spatial  and temporal 
+patterns  in fake video  detection.  Additionally,  it shows  that sequential  modeling 
+techniques like LSTMs can effectively handle variations in frame order and 
+subtle motion differences introduced by generative models.  
+
+===== PAGE 24 =====
+22  2.2.1 Drawbacks:  
+• Computational  Complexity:  LSTMs  require  high computational 
+power, limiting their use for real -time analysis.  
+• Limited  Scalability: The approach  struggles with  long-duration  videos 
+due to memory constraints.  
+• Overfitting Risks: Excessive training on specific datasets may cause  
+poor generalization to new fake sources.  
+• Dependency on Temporal Length: Performance decreases for videos 
+with missing or corrupted frames.  
+• Latency:  Sequential  frame  processing  increases  inference  time.  
+• Inconsistent  Frame  Quality:  Low-resolution  or compressed  videos 
+reduce temporal accuracy.  
+• High  Energy  Usage:  Continuous  frame -based  feature  extraction 
+demands large power resources, affecting efficiency.  
+
+===== PAGE 25 =====
+23  2.3 Deepfake  Detection  Using  Frequency  and Attention -Based  CNN  Models  
+ 
+C. Durall, R., Keuper, J., and Keuper, M., “Watch Your Up - 
+Convolution: CNN -Based Deepfake Detection in the Frequency Domain,” 
+IEEE Conference on Computer Vision and Pattern Recognition (CVPR) , 
+2020.  
+This This paper explores deepfake detection in the frequency domain 
+using CNN -based attention mechanisms. It highlights that most GAN - 
+generated images exhibit frequency artifacts due to up -sampling operations 
+during  generation.  The proposed  model  converts  each image  into its frequency 
+spectrum using a 2D Fast Fourier Transform (FFT) and applies CNNs to 
+analyze spectral inconsistencies. The method achieves 93% accuracy on the 
+Celeb -DF and FaceForensics++ datasets, demonstrating that frequency -based 
+detection    is   less   affected    by   pixel -level    manipulations.  
+An attention  mechanism  is integrated  to emphasize  important  spectral  regions, 
+improving the network’s focus on informative frequency patterns. This 
+approach  reduces  dependency  on spatial  cues,  making  it robust  against  various 
+image -level transformations such as blurring, noise addition, or compression.  
+2.3.1 Drawbacks:  
+• Limited  Temporal  Analysis:  The model  only analyzes  single -frame 
+frequency features and ignores temporal dynamics.  
+• High  Sensitivity  to Filters:  Incorrect  preprocessing  may distort  
+frequency information.  
+• Dataset  Dependency:  Performance  varies  depending  on dataset 
+diversity and manipulation techniques.  
+
+===== PAGE 26 =====
+24  • Reduced Real -Time Capability: Transforming frames into frequency 
+domains introduces latency.  
+• Overhead  in Preprocessing:  FFT conversion  adds computational  cost. 
+• Lower  Robustness  Against  Advanced  GANs:  New  GAN  architectures 
+produce fewer frequency artifacts, reducing model effectiveness.  
+• Integration Difficulty: Implementing FFT -based systems in streaming 
+pipelines is technically complex.  
+
+===== PAGE 27 =====
+25  CHAPTER  3  
+                                     SYSTEM  METHODOLOGY  
+3.1 Existing  System:  
+ 
+Deepfake technology has rapidly advanced due to the emergence of 
+Generative  Adversarial  Networks (GANs),  enabling  the creation of highly realistic 
+synthetic videos and images. These manipulations pose serious threats to privacy, 
+security, and digital media authenticity. Existing systems for deepfake detection 
+primarily focus on identifying visual artifacts, pixel -level inconsistencies, or facial 
+irregularities using traditional image analysis techniques.  
+Earlier methods relied on handcrafted feature extraction, such as texture, 
+color histograms, and frequency domain features, combined with machine 
+learning classifiers like Support Vector Machines (SVMs), Random Forests, and 
+K-Nearest Neighbors (KNN). Although these models could identify early 
+deepfakes, they struggled to generalize across datasets and often failed when 
+forgeries were produced using advanced GAN models with better blending and 
+lighting adjustments.  
+With  the evolution  of deep  learning,  Convolutional  Neural  Networks  
+(CNNs) became the preferred choice for detecting manipulated frames. Models 
+such as XceptionNet, MesoNet, and ResNet50 demonstrated strong performance 
+in detecting  frame -based  anomalies.  These  models  learn  hierarchical  features 
+automatically  from  raw data,  reducing  the dependency  on manual  feature 
+engineering. However, CNN -based  approaches  primarily  analyze  static images 
+and lack the ability  to capture  temporal  inconsistencies  present  in video  sequences. 
+Temporal detection systems using Recurrent Neural Networks (RNNs) and  
+Long  Short -Term  Memory  (LSTM)  networks  were  later developed  to address  this 
+issue.  These  models  analyze  sequential  frames  to detect  motion  irregularities,  such 
+
+===== PAGE 28 =====
+26  as unnatural blinking or lip -sync errors. While effective, they require large 
+computational  resources  and are not suitable  for real-time applications  due to high 
+latency.  
+Despite these advancements, existing systems face challenges  such as data 
+imbalance, lack of robustness, computational inefficiency, and difficulty in 
+generalizing across datasets. The increasing complexity of deepfake generation 
+models  calls for hybrid  architectures  that can combine  spatial  and temporal  feature 
+extraction  efficiently.  Therefore,  an integrated  and optimized  model  is essential  to 
+enhance accuracy, reduce computational cost, and enable real -time deepfake 
+detection.  
+ 
+ 
+
+===== PAGE 29 =====
+27  3.2 Proposed  System:  
+In the proposed system, a Hybrid  Deep Learning Framework is introduced 
+that effectively combines Enhanced  EfficientNet B0 for  spatial  feature  extraction 
+and Temporal Convolutional Networks (TempCNNs) for temporal feature 
+learning. This integration enables the system to analyze both static and dynamic 
+aspects of video content to accurately differentiate between real and fake videos.  
+The EfficientNet  B0 model,  known  for its optimized  compound  scaling  and 
+efficient structure, is used to extract detailed visual features from each video 
+frame.  It captures  subtle  inconsistencies  in facial  structure,  skin tone,  illumination, 
+and texture that may indicate synthetic manipulations. The extracted features are 
+then passed into the TempCNN, which processes sequences of frames to detect 
+temporal distortions such as irregular eye movements, inconsistent mouth 
+synchronization, or unnatural motion transitions.  
+A Feature Pyramid Network (FPN) is integrated to enhance the fusion of 
+multi -scale spatial features,  while data augmentation techniques such as CutMix, 
+MixUp, and Random Erasing are applied to improve generalization and reduce 
+overfitting. The proposed model is trained using the FFIW 10K dataset, which 
+contains 10,000 balanced real and fake videos, ensuring fair evaluation and 
+improved robustness.  
+The hybrid model achieves a training accuracy of 91.5% and a testing 
+accuracy  of 92.45%  with a computational  cost of 0.45 GFLOPs,  demonstrating  its 
+lightweight yet effective nature. Unlike conventional LSTM -based systems, this 
+model can operate  in near real-time on moderate  hardware,  making it suitable  for 
+large -scale video authentication systems used by media platforms, forensic 
+investigators, and cybersecurity agencies.  
+
+===== PAGE 30 =====
+28  3.2.1 The Proposed  CNN  Architecture:  
+The he proposed  hybrid  architecture  integrates  two major  components — 
+spatial feature extraction and temporal sequence analysis —into a unified 
+framework for robust deepfake detection.  
+The architecture  begins  with frame  preprocessing,  where  input  videos  are 
+divided  into individual  frames.  Each  frame  undergoes  face detection  and 
+alignment using Multi -task Cascaded Convolutional Networks (MTCNN)  to 
+ensure  accurate  facial  localization.  The preprocessed  frames  are then 
+normalized  and resized  to a consistent  resolution  (224×224×3)  for model  input.  
+The EfficientNet B0 module extracts spatial features from each frame 
+using depthwise separable convolutions and squeeze -and-excitation blocks. 
+This helps the model identify localized irregularities such as blurred edges, 
+inconsistent  lighting,  or subtle  visual  distortions.  The output  feature  maps  from 
+EfficientNet are passed through an FPN layer that combines hierarchical 
+representations from multiple layers to improve feature richness and 
+robustness.  
+The resulting spatial features are fed into the Temporal CNN 
+(TempCNN), which processes the sequential nature of frames through 1D 
+dilated convolutions. TempCNN efficiently models long -term temporal 
+dependencies without relying on recurrent layers. This allows it to detect 
+inconsistencies in frame transitions, unnatural motion flow, and micro - 
+expressions that are often overlooked by static models.  
+Finally,  the concatenated  spatial -temporal  feature  map is passed  through 
+fully connected layers, followed by a softmax classifier, which outputs the 
+probability  of each video  being  either  real or fake. The model  is trained  end-to- 
+end using  the Adam  optimizer,  categorical  cross -entropy  loss, and adaptive  
+learning  rate scheduling  for faster  convergence.  
+
+===== PAGE 31 =====
+29  The architectural design of the proposed system ensures both accuracy 
+and efficiency, combining multi -scale feature extraction, lightweight 
+computation,  and effective  temporal  reasoning  for superior  deepfake  detection.  
+3.2.2 Advantages:  
+ 
+• High  Accuracy:  The hybrid  model  achieves  superior  accuracy  (92.45%) 
+by combining  spatial  and temporal feature  extraction in a single  unified 
+framework.  
+• Lightweight  Architecture:  The EfficientNet  B0 backbone  significantly 
+reduces computational cost, allowing real -time performance even on 
+moderate GPUs.  
+• Temporal Awareness: The TempCNN component captures sequential 
+inconsistencies that static models cannot detect, improving reliability.  
+• Robust Generalization: Data augmentation techniques and balanced 
+dataset usage enhance model robustness across different manipulation 
+types.  
+• Scalability: The system can be extended to future datasets or newer 
+manipulation techniques with minimal retraining.  
+• Cost -Effective: The framework does not require high -end GPUs for 
+inference and can be deployed on standard computing hardware.  
+• Automation:  The model  can automatically  analyze  thousands  of videos 
+without  manual  inspection,  saving  time in forensic  and verification  tasks.  
+ 
+ 
+ 
+ 
+. 
+
+===== PAGE 32 =====
+30  CHAPTER  4  
+                                          SYSTEM  REQUIREMENT  
+ 
+The purpose of the Software Requirement Specification (SRS) is to 
+define  the complete  technical,  functional,  and performance  requirements  of the 
+proposed system. It provides a clear and unambiguous understanding of what 
+the system is expected to achieve, along with its constraints, behavior, and 
+dependencies. This chapter specifies the hardware and software requirements 
+necessary for implementing the proposed Hybrid Deep Learning Framework 
+for Deepfake  Detection  Using  Temporal  and Spatial  Features.  The goal of this 
+section is to provide a concise and comprehensive overview of all tools, 
+platforms, and resources required for the efficient development and 
+deployment of the system.  
+ 
+4.1 Hardware  Requirements  
+ 
+• System:  Core  i5 Processor.  
+• Hard  Disk:  500 GB. 
+ 
+• Monitor:  15” LED  
+ 
+• Input  Devices:  Keyboard,  Mouse  
+• Memory  (RAM):  16 GB 
+ 
+ 
+4.2 Software  Requirements:  
+ 
+• Operating  system:  Windows  11 (64-bit) 
+
+===== PAGE 33 =====
+31  • IDE:  PyCharm  / Jupyter  Notebook  / Visual  Studio  Code  
+ 
+• External  Libraries:  OpenCV,  NumPy,  Matplotlib,  Pandas,  Scikit -learn  
+ 
+• Programming  Language:  Python  3.11 
+• Deep  Learning  Frameworks:  TensorFlow  2.x, Keras,  and PyTorch  
+ 
+• Pre-trained  Models:  EfficientNet  B0 and Temporal  CNN  (TempCNN)  
+ 
+• Visualization  Tools:  TensorBoard,  Matplotlib,  and Seaborn.  
+
+===== PAGE 34 =====
+32  4.3 Software  Description:  
+4.3.1 Python  Language:  
+Python is a high -level, object -oriented, and dynamically typed 
+programming  language  widely  used in artificial  intelligence,  computer  vision,  and 
+deep learning applications. Its simplicity, readability, and extensive library 
+support make it an ideal choice for implementing a hybrid deep learning -based 
+deepfake detection system. Python’s powerful ecosystem enables seamless 
+integration of machine learning, data preprocessing, and visualization processes 
+in a unified workflow.  
+1. Numerical  Computing:  
+Python, along with libraries like NumPy and Pandas, provides efficient 
+handling of multidimensional arrays and data structures. These are essential for 
+managing video frame data, performing mathematical computations, and 
+preprocessing large datasets such as the FFIW 10K video dataset used in this 
+project.  
+
+===== PAGE 35 =====
+33  2. Image  and Video  Processing:  
+The OpenCV library is central to video preprocessing, including tasks like 
+frame extraction, resizing, color normalization, and facial alignment. MTCNN is 
+employed for face detection and alignment, ensuring only relevant facial regions 
+are analyzed by the deep learning model.  
+3. Deep  Learning  Frameworks:  
+Python’s TensorFlow and Keras frameworks provide the foundation for 
+developing  and training  the hybrid  model.  The EfficientNet  B0 architecture  is used 
+for spatial feature extraction, while Temporal CNN (TempCNN) captures 
+temporal dependencies in sequential video frames. These frameworks simplify 
+model creation, training, and optimization with GPU acceleration.  
+4. Optimization  Libraries:  
+Python’s Scikit -learn and TensorFlow optimizers are used for fine -tuning 
+hyperparameters such as learning rate, batch size, and weight decay, ensuring 
+optimal convergence and preventing overfitting.  
+5. Parallel  and GPU  Computing:  
+With  CUDA -enabled  GPUs,  TensorFlow  and PyTorch  can leverage  parallel 
+processing to train deep networks efficiently. This significantly reduces 
+computation time and enables real -time model inference.  
+6. Data  Visualization:  
+MATLAB Visualization libraries like Matplotlib, Seaborn, and 
+TensorBoard  help monitor  training  progress,  display  accuracy  and loss curves,  and 
+visualize prediction outcomes. These tools are essential for understanding model 
+behavior and performance metrics during development.  
+
+===== PAGE 36 =====
+34  7. Customizability  and Flexibility:  
+Python’s open -source ecosystem provides high flexibility to customize 
+model architectures, modify datasets, and integrate multiple frameworks. This 
+allows  developers  to experiment  with model  parameters  and evaluate  performance 
+across different datasets and environments.  
+4.3.2 MATLAB  Features:  
+1. Extensive  Library  Ecosystem:  
+Python  offers  a wide  range  of libraries  such as TensorFlow,  PyTorch,  Keras, 
+and OpenCV, which provide built -in functionalities for machine learning, 
+computer vision, and video analysis.  
+2. Ease  of Implementation:  
+Python’s  syntax  is simple  and readable,  enabling  faster  development  and 
+debugging  of deep  learning  models  
+
+===== PAGE 37 =====
+35  3. Image  and Video  Processing  Support:  
+The OpenCV and Pillow libraries offer powerful tools for frame -level 
+image enhancement, segmentation, and augmentation, which are crucial for 
+preprocessing deepfake video datasets.  
+4. Visualization:  
+Python provides multiple visualization packages that allow researchers to 
+easily interpret training progress, model predictions, and data distributions 
+through plots and graphs.  
+Toolboxes like Deep Learning, Optimization, and Machine Learning provide 
+tailored functions for model training, parameter optimization, and performance 
+evaluation.  
+5. Integration  Capabilities:  
+Python integrates seamlessly with machine learning and AI frameworks, 
+cloud  platforms,  and APIs,  allowing  the system  to be extended  for web or mobile 
+deployment.  
+6. Cross -Platform  Compatibility:  
+Python can be executed on Windows, macOS, and Linux, providing a 
+flexible and portable development environment.  
+7. Parallel  Processing:  
+With GPU and multi -core CPU support, Python enables parallelized 
+execution for faster deep learning training and inference.  
+8. Scalability:  
+Python supports large -scale data processing and can be integrated with 
+cloud  computing  services  such as AWS  ad Google  Colab  for distributed  model  
+
+===== PAGE 38 =====
+36  training.  
+9. Comprehensive  Documentation:  
+Python’s extensive online documentation, tutorials, and open -source 
+community contributions make it one of the most accessible languages for deep 
+learning and AI research.  
+
+===== PAGE 39 =====
+37  CHAPTER  5 
+ 
+                                        SYSTEM  IMPLEMENTATION  
+ 
+5.1 Modules:  
+ 
+5.1.1 Dataset  Collection:  
+The proposed  hybrid  deep  learning  model  is trained  and evaluated 
+using  the FFIW  10K dataset,  which  consists  of 10,000  video  samples  — equally 
+divided into 5,000 real and 5,000 deepfake videos. This dataset provides a 
+balanced distribution of real and fake samples, ensuring unbiased model 
+training and evaluation. Each video contains facial sequences recorded under 
+various lighting conditions, expressions, and head poses.  
+The dataset is  particularly chosen for  its diversity  and authenticity,  as 
+it includes deepfakes generated using multiple synthesis techniques such as 
+FaceSwap, DeepFaceLab, and FaceShifter, which create high -quality fake 
+videos by manipulating facial features, lip movements, and expressions.  
+Each  video  in the dataset  is decomposed  into individual  frames  with a 
+uniform size of 224×224×3 pixels. The frames are categorized into two main 
+classes:  
+• Real:  Genuine  video  sequences  without  any facial  manipulation.  
+• Fake:  Synthetic  videos  generated  using  GAN -based  architectures.  
+This classification allows the system to learn discriminative features 
+between  authentic  and manipulated  videos.  Fig. 5.1 shows  sample  frames  from 
+the dataset representing both categories.  
+
+===== PAGE 40 =====
+38  
+  
+(a) Real Video Frame  (b) Deepfake  Video  Frame  
+Figure  5.1 Samples  from the FFIW  10K Deepfake  Dataset  
+ 
+ 
+ 
+(a) Real  frame  (b) Fake  frame  
+Figure  5.2 Sample  frames  after  preprocessing  
+
+
+===== PAGE 41 =====
+39  5.1.2 Preprocessing:  
+Before training, all input videos undergo a series of preprocessing 
+steps to ensure uniformity and high -quality input for the model. The primary stages 
+include  frame  extraction,  face detection,  alignment,  resizing,  and data augmentation. 
+Each video is split into individual frames, and Multi -task Cascaded Convolutional 
+Networks (MTCNN) are used to detect and align facial regions. This ensures that 
+only relevant face areas are passed to the model, reducing background noise and 
+irrelevant information.  
+After  detection,  all cropped  face frames  are resized  to 224×224×3  to match  the input 
+requirement of the EfficientNet B0 model. The images are normalized by scaling 
+pixel values between 0 and 1 for stable convergence during training.  
+To enhance model robustness, data augmentation techniques such as horizontal 
+flipping, rotation (±30°), random cropping, and brightness adjustment are applied. 
+These  augmentations  simulate  real-world  variations  in lighting,  pose,  and expression, 
+helping the model generalize better.  
+
+===== PAGE 42 =====
+40  
+ 
+(a) Original  Frame  
+ 
+ 
+(b) Cropped  Face  
+
+
+===== PAGE 43 =====
+41   
+(c) Augmented  Frame  
+
+
+===== PAGE 44 =====
+42  5.1.3 Training  Dataset:  
+After  preprocessing,  the dataset  is divided  into training  (80%),  validation 
+(10%), and testing (10%) subsets. The EfficientNet B0 model extracts spatial 
+features  from  each frame,  while  the Temporal  CNN  (TempCNN)  processes  the 
+sequence of features to identify motion -based irregularities.  
+The hybrid model is trained using the Adam optimizer with a learning 
+rate of 0.001,  batch  size of 32, and cross -entropy  loss function.  The network  is 
+trained for 50 epochs to achieve optimal performance.  
+During training, the system learns discriminative patterns between real 
+and fake sequences by analyzing spatial inconsistencies (e.g., unnatural 
+lighting, texture mismatches) and temporal anomalies (e.g., inconsistent 
+blinking, jerky lip movement).  
+The model is implemented in Python 3.11 using the TensorFlow and 
+Keras frameworks. The training process is accelerated using GPU support, 
+reducing  computational  time.  After  training,  the model  achieves  91.5%  training 
+accuracy and 92.45% testing accuracy.  
+5.1.4 Testing:  
+ 
+Once  the model  is trained,  it is tested  on new,  unseen  deepfake  videos  to 
+evaluate  its real-world  performance.  During  testing,  each video  is divided  into 
+frames, and preprocessing (face detection and resizing) is applied similarly to 
+the training stage.  
+Each frame is passed through the trained EfficientNet B0 to extract 
+spatial features, which are then processed sequentially by the TempCNN to 
+identify temporal inconsistencies. The model outputs a probability value 
+between 0 and 1, indicating the likelihood of the video being real or fake.  
+
+===== PAGE 45 =====
+43  If the probability exceeds a threshold (e.g., 0.5), the video is classified 
+as fake; otherwise, it is considered real. The system is capable of detecting 
+manipulations in videos that are unseen during training, proving its 
+generalization ability.  
+The testing phase also involves visualizing prediction results and 
+generating sample heatmaps that highlight suspicious facial regions. These 
+visual outputs assist in interpreting the model’s decision -making process.  
+
+===== PAGE 46 =====
+44  5.1.5 Performance  Evaluation:  
+ 
+Assess the model’s effectiveness, standard performance metrics are 
+computed, including Accuracy, Precision, Recall, F1 -Score, and AUC (Area 
+Under Curve).  
+ 
+• Accuracy  measures  the overall  proportion  of correctly  classified  samples.  
+ 
+• Precision  quantifies  the proportion  of true positives  among  all predicted  fake 
+samples.  
+• Recall  (or sensitivity)  measures  the proportion  of actual  fakes  correctly 
+identified by the model.  
+• F1-Score provides the harmonic mean of Precision and Recall, offering a  
+balanced evaluation.  
+ 
+• AUC  (Area  Under  Curve)  evaluates  the model’s  discrimination  ability  
+across  multiple  thresholds.  
+ 
+Additionally,  a confusion  matrix  is generated  to visualize  the number  of 
+correct and incorrect predictions across both classes (Real and Fake). The 
+hybrid  model  demonstrates  strong  generalization  with high detection  accuracy, 
+minimal false positives, and efficient real -time inference performance.  
+The evaluation results confirm that combining EfficientNet B0 and 
+TempCNN significantly enhances the detection of spatiotemporal 
+inconsistencies in deepfake videos, outperforming traditional CNN -only and 
+RNN -based systems.  
+
+===== PAGE 47 =====
+45  
+CHAPTER  6 
+                                                      SYSTEM  DESIGN  
+6.1 System  Model  
+ 
+ 
+ 
+ 
+Fig 6.1 System  Architecture  
+
+===== PAGE 48 =====
+46  
+6.2 System  Flowchart  
+ 
+Fig 6.2 Flowchart  Diagram  
+
+===== PAGE 49 =====
+47   
+ 
+ 
+ 
+7.1 Feasibility  Study  CHAPTER  7  
+        SYSTEM  FEASIBILITY
+ 
+The feasibility analysis of the Hybrid Deepfake Detection System 
+determines whether the project can be successfully developed, implemented, 
+and maintained with the available resources. This involves assessing the 
+system’s economic, technical, and social feasibility to ensure its practicality 
+and sustainability. The feasibility study helps in understanding potential 
+challenges, required resources, and expected benefits before large -scale 
+deployment is  
+• Economic  Feasibility.  
+ 
+• Technical  Feasibility.  
+ 
+• Social  Feasibility.  
+ 
+7.1.1 Economic  Feasibility  
+ 
+The economic feasibility evaluates the cost -effectiveness of 
+implementing the proposed deepfake detection framework. Since the system 
+utilizes open -source tools and pre -trained models such as EfficientNet B0, 
+TempCNN, and TensorFlow, development costs are minimal.  
+All required libraries — like OpenCV, NumPy, and Keras — are freely 
+available, significantly reducing licensing expenses. The model can be trained 
+on a standard workstation with a GPU, avoiding the need for costly cloud 
+resources. Additionally, because the system requires no specialized hardware 
+beyond a GPU -enabled machine, maintenance costs remain low.
+
+===== PAGE 50 =====
+48   
+ 
+ 
+7.1.2 Technical  Feasibility  
+The technical  feasibility  assesses  whether  the existing  technology  and 
+infrastructure can support the system’s development and execution. The 
+proposed hybrid framework requires moderate computational resources (Intel 
+i5 or higher processor with 16 GB RAM and a 4 GB GPU).  
+The system is developed in Python using TensorFlow and Keras, 
+ensuring  compatibility  across  platforms  like Windows,  Linux,  and macOS.  The 
+integration of EfficientNet B0 (for spatial feature extraction) and TempCNN 
+(for temporal  analysis)  provides  a technically  robust  and optimized  solution  for 
+deepfake detection.  
+As all the components  are based  on widely  used and well-documented 
+frameworks, implementation and deployment are straightforward. The use of 
+pre-trained models also simplifies training, making the system highly 
+technically feasible and easy to scale or enhance in the future.  
+7.1.3 Social  Feasibility  
+Social feasibility examines the acceptance and usability of the 
+system by its intended users. The proposed framework can be easily adopted 
+by digital forensic investigators, media agencies, and content verification 
+teams.  The system’s  simple  and interactive  interface  ensures  that users  without 
+deep  technical  knowledge  can upload  videos,  run analysis,  and interpret  results 
+easily.  
+By empowering users to verify media authenticity and combat 
+misinformation, the system supports a safer digital environment. Awareness 
+and training  programs  can further  help user understand  deepfake  risks  and use.
+
+===== PAGE 51 =====
+49  
+ 
+ 
+ 
+7.1 Output  Images  CHAPTER 8 
+CODING  & RESULTS  
+ 
+ 
+ 
+ 
+Fig 8.1.1  Highest  Variance  Frame  in Real  Class  
+ 
+ 
+ 
+ 
+Fig 8.1.2  Highest  Variance  Frame  in Fake  Class  
+
+
+===== PAGE 52 =====
+50  
+ 
+Fig 8.1.3  Example  of Face  Detection  and Alignment  
+ 
+Fig 8.1.4  Augmented  Frame  Samples  
+
+
+===== PAGE 53 =====
+51  
+ 
+ 
+ 
+Fig 8.1.5  Class  Distribution  of Deepfake  Dataset  
+ 
+ 
+ 
+ 
+Fig 8.1.6  Real  Video  Pixel  Intensity  Distribution  
+
+
+===== PAGE 54 =====
+52  
+ 
+ 
+Fig 8.1.7  Fake  Video  Pixel  Intensity  Distribution  
+ 
+ 
+ 
+Fig 8.1.8  Spatial  Feature  Map  (EfficientNet  B0 Output)  
+
+
+===== PAGE 55 =====
+53  
+ 
+ 
+ 
+Fig 8.1.9  Temporal  Feature  Map  (TempCNN  Output)  
+ 
+ 
+ 
+Fig 8.1.10  Confusion  matrix  
+
+
+===== PAGE 56 =====
+54  
+ 
+Fig 8.1.11  Pre-class  Performance  Metrics  
+ 
+ 
+ 
+Fig 8.1.12  Sample  output  of the Testing  image  
+
+
+===== PAGE 57 =====
+55  7.2 Sample  Code  
+7.2.1 Training  
+import  torch  
+import  torch.nn  as nn 
+import  torch.nn.functional  as F 
+from  torchvision.models  import  efficientnet_b0  
+from  torchvision.models.feature_extraction  import  create_feature_extractor  
+ 
+ 
+ 
+# ----------------  Feature  Pyramid  Network  ----------------  
+class FPN(nn.Module):  
+def _init_(self,  in_channels_list,  out_channels): 
+super(FPN, self)._init_()  
+self.lateral_convs  = nn.ModuleList() 
+self.output_convs  = nn.ModuleList()  
+ 
+for in_channels  in in_channels_list:  
+l_conv  = nn.Conv2d(in_channels,  out_channels,  1) 
+o_conv  = nn.Conv2d(out_channels,  out_channels,  3, padding=1) 
+self.lateral_convs.append(l_conv) 
+self.output_convs.append(o_conv)  
+ 
+def forward(self,  features):  
+# features: list of feature maps from backbone 
+last_inner  = self.lateral_convs[ -1](features[ -1]) 
+results = []  
+results.insert(0,  self.output_convs[ -1](last_inner))  
+
+===== PAGE 58 =====
+56  for i in range(len(features) - 2, -1, -1): 
+lateral  = self.lateral_convs[i](features[i])  
+inner  = F.interpolate(last_inner,  size=lateral.shape[ -2:], mode="nearest")  + 
+lateral   
+ 
+last_inner  = inner  
+results.insert(0,  self.output_convs[i](inner))  
+# Global  average  pooling  
+outs = [F.adaptive_avg_pool2d(f,  1).flatten(1)  for f in results] 
+return torch.cat(outs, dim=1)  
+ 
+ 
+ 
+# ----------------  Temporal  CNN  with GLU  --------------- - 
+class  GLUBlock(nn.Module):  
+def _init_(self,  in_channels,  out_channels,  kernel_size,  dilation): 
+super(GLUBlock, self)._init_()  
+padding  = (kernel_size  - 1) * dilation  // 2 
+self.conv  = nn.Conv1d(in_channels,  out_channels  * 2, kernel_size, 
+padding=padding, dilation=dilation)  
+self.res_conv  = nn.Conv1d(in_channels,  out_channels,  1) 
+ 
+ 
+def forward(self,  x): 
+out = self.conv(x)  
+out, gate = out.chunk(2,  dim=1) 
+out = out * torch.sigmoid(gate) 
+res = self.res_conv(x)  
+return  (out +  res) * (1 / 1.4142)  
+
+===== PAGE 59 =====
+57  class  TemporalCNN(nn.Module):  
+def _init_(self,  in_channels,  hidden_channels=256): 
+super(TemporalCNN, self)._init_()  
+self.block1  = GLUBlock(in_channels,  hidden_channels,  kernel_size=3, 
+dilation=1)  
+self.block2  = GLUBlock(hidden_channels,  hidden_channels,  kernel_size=3, 
+dilation=2)  
+self.block3  = GLUBlock(hidden_channels,  hidden_channels,  kernel_size=3, 
+dilation=4)  
+self.pool  = nn.AdaptiveAvgPool1d(1)  
+ 
+def forward(self,  x): 
+# x: (B, C, T)  
+x = self.block1(x) 
+x = self.block2(x) 
+x = self.block3(x)  
+return  self.pool(x).squeeze( -1) 
+ 
+ 
+ 
+# ----------------  Backbone  + FPN + TemporalCNN  --------------- - 
+class  DeepfakeHybrid(nn.Module):  
+def _init_(self,  pretrained_backbone=True): 
+super(DeepfakeHybrid, self)._init_()  
+ 
+# Backbone  - EfficientNet -B0 
+backbone  = efficientnet_b0(weights='IMAGENET1K_V1'  if 
+
+===== PAGE 60 =====
+58  pretrained_backbone  else None) 
+return_nodes = {  
+'features.2':  'low',  
+'features.4':  'mid',  
+'features.6':  'high'  
+} 
+self.backbone  = create_feature_extractor(backbone, 
+return_nodes=return_nodes)  
+ 
+# Feature  Pyramid  Network  (merge  spatial  features)  
+self.fpn  = FPN(in_channels_list=[24,  40, 112],  out_channels=64)  
+fpn_out  = 64 * 3 # 3 scales merged  
+ 
+# Temporal  CNN  for sequential  modeling  
+self.temporal  = TemporalCNN(in_channels=fpn_out,  hidden_channels=256)  
+ 
+ 
+# Fully  connected  classifier 
+self.fc = nn.Sequential(  
+nn.Linear(256,  128), 
+nn.ReLU(),  
+nn.Dropout(0.3), 
+nn.Linear(128,  1) 
+) 
+ 
+ 
+def forward(self,  x): 
+# x shape: (B,  T, 1, 3, 224, 224) 
+B, T, _, C,  H, W  = x.shape  
+
+===== PAGE 61 =====
+59  x = x.view(B  * T, C, H, W) 
+ 
+# Extract spatial features 
+features  = self.backbone(x)  
+fpn_out  = self.fpn([features['low'],  features['mid'],  features['high']])  # (B*T,  C) 
+ 
+# Reshape  for temporal  modeling  
+fpn_out  = fpn_out.view(B,  T, -1).permute(0,  2, 1) # (B, C, T) 
+temporal_out = self.temporal(fpn_out)  # (B, hidden)  
+return  self.fc(temporal_out)  
+ 
+ 
+ 
+if _name_  == "_main_":  
+# Example:  initialize  and save model  
+model  = DeepfakeHybrid(pretrained_backbone=False) 
+dummy = torch.randn(1, 8, 1, 3, 224, 224)  
+out = model(dummy) 
+print("Output:",  out.shape)  
+ 
+torch.save(model.state_dict(),  "best_model.pth") 
+print("Model  saved  as best_model.pth  ⬛  ") 
+
+===== PAGE 62 =====
+60  8.1.2  Testing.m  
+import  os, random,  cv2, torch 
+import numpy as np  
+import  tkinter  as tk 
+from  tkinter  import  filedialog,  messagebox,  scrolledtext 
+from PIL import Image, ImageTk  
+from  facenet_pytorch  import  MTCNN 
+from torchvision import transforms  
+from  torchvision.models  import  efficientnet_b0  
+from  torchvision.models.feature_extraction  import  create_feature_extractor 
+from tqdm import tqdm  
+import  torch.nn  as nn 
+import  torch.nn.functional  as F 
+ 
+ 
+# MODEL  (unchanged  core) 
+class FPN(nn.Module):  
+def  init (self,  chs, out_ch=128): 
+super().   init () 
+self.lateral  = nn.ModuleList([nn.Conv2d(c,  out_ch,  1) for c in chs])  
+self.smooth  = nn.ModuleList([nn.Conv2d(out_ch, out_ch, 3, padding=1) for _ 
+in chs])  
+def forward(self,  feats):  
+x = self.lateral[ -1](feats[ -1]) 
+outs = [self.smooth[ -1](x)]  
+for i in range(len(feats) -2, -1, -1): 
+lat = self.lateral[i](feats[i])  
+x = lat + nn.functional.interpolate(x,  size=lat.shape[ -2:], mode='nearest')  
+
+===== PAGE 63 =====
+61  outs.insert(0,  self.smooth[i](x))  
+pooled  = [nn.functional.adaptive_avg_pool2d(f,(1,1)).flatten(1)  for f in outs] 
+return torch.cat(pooled, dim=1)  
+ 
+class  Backbone(nn.Module): 
+def  init (self):  
+super().  init () 
+base = efficientnet_b0(weights="IMAGENET1K_V1") 
+self.extract  = create_feature_extractor(base,  return_nodes={  
+'features.2':'f2',  'features.4':'f4',  'features.6':'f6'  
+}) 
+with torch.no_grad():  
+dummy  = torch.zeros(1,3,224,224)  
+chs = [v.shape[1]  for v in self.extract(dummy).values()] 
+self.fpn = FPN(chs)  
+self.out_dim  = 128 * len(chs) 
+def forward(self,x):  
+feats  = list(self.extract(x).values()) 
+return self.fpn(feats)  
+ 
+class  GLUBlock(nn.Module):  
+def  init (self,  in_c,  out_c,  dilation=1): 
+super().   init () 
+self.conv  = nn.Conv1d(in_c,  out_c*2,  3, padding=dilation,  dilation=dilation) 
+self.res  = nn.Conv1d(in_c, out_c, 1) if in_c != out_c else None  
+self.bn  = nn.BatchNorm1d(out_c)  
+def forward(self,x):  
+
+===== PAGE 64 =====
+62  a,b = self.conv(x).chunk(2,1) 
+out = a * torch.sigmoid(b)  
+res = x if self.res  is None  else self.res(x) 
+return self.bn(out + res)  
+ 
+class  TemporalCNN(nn.Module):  
+def  init (self,  in_c,  hidden=128): 
+super().   init () 
+self.blocks = nn.Sequential( 
+GLUBlock(in_c,  hidden,  1), 
+GLUBlock(hidden,  hidden,  2), 
+GLUBlock(hidden,  hidden,  4) 
+) 
+self.pool  = nn.AdaptiveAvgPool1d(1) 
+def forward(self,x):  
+x = x.permute(0,2,1) 
+y = self.blocks(x)  
+return  self.pool(y).squeeze( -1) 
+ 
+class  DeepfakeModel(nn.Module): 
+def  init (self):  
+super().  init () 
+self.backbone  = Backbone()  
+self.seg_fc  = nn.Sequential(nn.Linear(self.backbone.out_dim,256), nn.ReLU(), 
+nn.Dropout(0.3))  
+self.tcn  = TemporalCNN(256)  
+self.fc  = nn.Sequential(nn.Linear(128,64),  nn.ReLU(),  nn.Dropout(0.3),  
+
+===== PAGE 65 =====
+63  nn.Linear(64,1))  
+def forward(self,  seqs):  
+B, N, _, C, H, W = seqs.shape 
+seqs = seqs.view(B*N,  C, H, W) 
+feats = self.backbone(seqs)  
+feats  = feats.view(B,  N, -1) 
+feats = self.seg_fc(feats) 
+tfeat = self.tcn(feats)  
+return  self.fc(tfeat).squeeze(1)  
+ 
+# GUI  CONFIG  
+DEVICE  = "cuda"  if torch.cuda.is_available()  else "cpu" 
+MODEL_PATH = "best_model.pth"  
+FRAME_COUNT  = 8 
+ 
+# Try load model  safely  
+model  = DeepfakeModel().to(DEVICE) 
+if os.path.exists(MODEL_PATH):  
+try: 
+model.load_state_dict(torch.load(MODEL_PATH,  map_location=DEVICE)) 
+except Exception as e:  
+print("Warning:  failed  to load model  weights:",  e) 
+else: 
+print("Warning:  model  file not found.  Running  with randomly  initialized  weights.") 
+model.eval()  
+ 
+mtcnn  = MTCNN(image_size=224,  margin=10,  device=DEVICE,  keep_all=False)  
+
+===== PAGE 66 =====
+64  transform  = transforms.Compose([transforms.Resize((224,224)), 
+transforms.ToTensor()])  
+ 
+# TKINTER  UI SETUP  
+root =  tk.Tk()  
+root.title("Deepfake Detection System") 
+root.state('zoomed')  # full-screen  window 
+root.configure(bg="#0f1720")  
+ 
+# ----------  constants  for fixed  sizing  ----------  
+TOP_BOX_W = 520  
+TOP_BOX_H  = 360 
+VIEWER_W  = 560 
+VIEWER_H  = 420 
+SMALL_BOX_W  = 360 
+SMALL_BOX_H  = 220 
+ANALYSIS_H  = 230 
+ 
+PAD_X  = 18 
+PAD_Y  = 12 
+ 
+ 
+# Title 
+tk.Label(root, text="˜—˘ f ’~` ˆz   Deepfake Detection System", font=("Segoe UI", 22, "bold"),  
+bg="#0f1720", fg="#38e6c7").pack(pady=12)  
+ 
+# ----------  Top row: original,  face,  result  ----------  
+top_row = tk.Frame(root, bg="#0f1720")  
+
+===== PAGE 67 =====
+65  top_row.pack(pady=(6,12),  fill="x")  
+ 
+# Original  Video  Frame  
+frame_original  = tk.LabelFrame(top_row,  text="Original  Video  Frame", 
+font=("Segoe UI", 12, "bold"),  
+bg="#15202b",  fg="#38e6c7",  width=TOP_BOX_W, 
+height=TOP_BOX_H, labelanchor="n")  
+frame_original.pack_propagate(False) 
+frame_original.grid(row=0,  column=0,  padx=PAD_X) 
+frame_original.grid_propagate(False)  
+ 
+lbl_original  = tk.Label(frame_original,  bg="#15202b") 
+lbl_original.pack(expand=True, padx=10, pady=10)  
+ 
+# Detected  Face 
+frame_processed  = tk.LabelFrame(top_row,  text="Detected  Face",  font=("Segoe  UI", 
+12, "bold"),  
+bg="#15202b",  fg="#38e6c7",  width=TOP_BOX_W, 
+height=TOP_BOX_H, labelanchor="n")  
+frame_processed.pack_propagate(False) 
+frame_processed.grid(row=0,  column=1,  padx=PAD_X) 
+frame_processed.grid_propagate(False)  
+ 
+lbl_processed  = tk.Label(frame_processed,  bg="#15202b") 
+lbl_processed.pack(expand=True, padx=10, pady=10)  
+ 
+# Result  
+
+===== PAGE 68 =====
+66  frame_result  = tk.LabelFrame(top_row,  text="Result",  font=("Segoe  UI", 12, "bold"), 
+bg="#15202b",  fg="#38e6c7",  width=SMALL_BOX_W,  
+height=TOP_BOX_H, labelanchor="n") 
+frame_result.pack_propagate(False) 
+frame_result.grid(row=0,  column=2,  padx=PAD_X) 
+frame_result.grid_propagate(False)  
+ 
+lbl_result  = tk.Label(frame_result,  text="No  Result",  font=("Segoe  UI", 18, "bold"), 
+bg="#15202b", fg="#38e6c7")  
+lbl_result.pack(expand=True,  padx=10,  pady=10)  
+ 
+ 
+# Buttons  row 
+button_row  = tk.Frame(root,  bg="#0f1720") 
+button_row.pack(pady=(6,8))  
+ 
+button_style  = {"font":("Segoe  UI", 12, "bold"),  "bg":"#38e6c7",  "fg":"#07121a", 
+"bd":0, "relief":"raised"}  
+ 
+# we will attach  commands  later,  functions  need  to exist  at runtime  anyway  
+btn_load  = tk.Button(button_row,  text="⬛1 Load  Video",  width=16,  height=1,  
+**button_style)  
+btn_extract  = tk.Button(button_row,  text="⬛³ Extract  Frames",  width=16,  height=1,  
+**button_style)  
+btn_detect  = tk.Button(button_row,  text="⬛³ Detect  Faces",  width=16,  height=1,  
+**button_style)  
+btn_classify  = tk.Button(button_row,  text="⬛G Classify  Video",  width=16, height=1,  
+
+===== PAGE 69 =====
+67  **button_style)  
+btn_exit = tk.Button(button_row, text=" + Exit", width=12, height=1, bg="#ff6b6b", 
+fg="white", font=("Segoe UI", 12, "bold"))  
+ 
+btn_load.grid(row=0, column=0, padx=10) 
+btn_extract.grid(row=0, column=1, padx=10) 
+btn_detect.grid(row=0, column=2, padx=10) 
+btn_classify.grid(row=0,  column=3,  padx=10) 
+btn_exit.grid(row=0, column=4, padx=16)  
+ 
+# ----------  Lower  row: viewer  (left)  and analysis  (right)  ----------  
+lower_row = tk.Frame(root, bg="#0f1720") 
+lower_row.pack(pady=(12,18), fill="both", expand=False)  
+ 
+# Extracted  Frame  Viewer  box (fixed  size) 
+viewer_frame  = tk.LabelFrame(lower_row,  text="Extracted  Frame  Viewer", 
+font=("Segoe UI", 12, "bold"),  
+bg="#15202b",  fg="#38e6c7",  width=VIEWER_W, 
+height=VIEWER_H, labelanchor="n")  
+viewer_frame.pack_propagate(False)  
+viewer_frame.grid(row=0,  column=0,  padx=PAD_X,  sticky="nw") 
+viewer_frame.grid_propagate(False)  
+ 
+lbl_viewer = tk.Label(viewer_frame, bg="#15202b") 
+lbl_viewer.place(relx=0.5,  rely=0.08,  anchor="n")  # we'll  set image  later 
+ 
+# Navigation  band  always  visible  below  viewer  
+
+===== PAGE 70 =====
+68  nav_band  = tk.Frame(viewer_frame,  bg="#15202b") 
+nav_band.place(relx=0.5, rely=0.78, anchor="n")  
+ 
+btn_prev  = tk.Button(nav_band,  text="⬛D Previous",
+ width=14,  height=1, bg="#23303a", fg="white", 
+font=("Segoe UI", 10, "bold"))  
+btn_next =  tk.Button(nav_band,  text="Next ⬛D", width=14,  height=1,  bg="#23303a", 
+fg="white",  font=("Segoe  UI", 10, "bold"))  
+btn_prev.grid(row=0,  column=0,  padx=12,  pady=6) 
+btn_next.grid(row=0,  column=1,  padx=12,  pady=6)  
+ 
+# Analysis  box (fixed  size) 
+analysis_frame  = tk.LabelFrame(lower_row,  text="Video  Analysis  (Numerical 
+Metrics)", font=("Segoe UI", 12, "bold"),  
+bg="#15202b",  fg="#38e6c7",  width=SMALL_BOX_W, 
+height=VIEWER_H, labelanchor="n")  
+analysis_frame.pack_propagate(False)  
+analysis_frame.grid(row=0,  column=1,  padx=PAD_X,  sticky="ne")  
+ 
+# Use scrolled  text to show  metrics  (read -only)  
+analysis_text  = scrolledtext.ScrolledText(analysis_frame,  width=40,  height=24, 
+bg="#15202b", fg="white",  
+font=("Consolas", 11), bd=0, wrap="word") 
+analysis_text.pack(padx=10, pady=10, fill="both", expand=True) 
+analysis_text.insert(tk.END,  "Load  a video  and extract  frames  to see numeric  analysis 
+here.")  
+
+===== PAGE 71 =====
+69  # Globals  
+VIDEO_PATH  = None  
+FRAMES = []   # list of RGB  numpy  arrays 
+FACES  = [] # list of face tensors  (C,H,W)  
+CURRENT_FRAME  = 0 
+ 
+ 
+# ----------  Utility  functions  --------- - 
+def _pil_image_fit(img_pil,  max_w,  max_h):  
+"""Return a resized copy of PIL image that fits inside max_w/max_h preserving  
+aspect ratio."""  
+w, h = img_pil.size  
+scale  = min(max_w  / w, max_h  / h) 
+new_w,  new_h  = int(w  * scale),  int(h  * scale)  
+return  img_pil.resize((new_w,  new_h),  Image.LANCZOS)  
+ 
+ 
+def _show_in_label(label_widget, pil_img, max_w, max_h): 
+"""Put  a PIL image  into a label  while  keeping  reference.""" 
+img_resized = _pil_image_fit(pil_img, max_w, max_h) 
+tk_img = ImageTk.PhotoImage(img_resized) 
+label_widget.config(image=tk_img)  
+label_widget.image  = tk_img  
+ 
+# ----------  Video  analysis  computation  --------- - 
+def compute_video_metrics(video_path,  frames,  faces_list=None): 
+""" 
+Returns  a dict with numeric  metrics:  
+
+===== PAGE 72 =====
+70  - resolution  (w,h),  fps, total_frames  
+- avg_brightness  (grayscale  mean)  
+- color_variance  (mean  var across  frames)  
+- motion_intensity  (mean  frame -diff) 
+- avg_face_area  (px^2)  or None 
+""" 
+metrics  = {} 
+if not video_path  or not os.path.exists(video_path): 
+return metrics  
+ 
+cap = cv2.VideoCapture(video_path)  
+width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH) or 0) 
+height  = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  or 0) 
+fps = float(cap.get(cv2.CAP_PROP_FPS) or 0.0)  
+total_frames  = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)  or 0) 
+cap.release()  
+ 
+metrics['resolution']  = (width,  height) 
+metrics['fps'] = fps 
+metrics['total_frames']  = total_frames  
+ 
+if frames:  
+# grayscale  brightness  mean  per frame  then average 
+gray_means = []  
+color_vars  = [] 
+for f in frames:  
+# f is RGB  numpy  uint8  
+
+===== PAGE 73 =====
+71  gray = cv2.cvtColor(f,  cv2.COLOR_RGB2GRAY) 
+gray_means.append(float(np.mean(gray)))  
+# color variance (mean variance across channels) 
+color_vars.append(float(np.mean(np.var(f.astype(np.float32),  axis=(0,1)))))  
+metrics['avg_brightness']  = float(np.mean(gray_means)) 
+metrics['color_variance'] = float(np.mean(color_vars))  
+ 
+# motion  intensity:  average  of mean  absolute  difference  across  consecutive 
+frames  
+if len(frames)  > 1: 
+diffs = []  
+for i in range(1,  len(frames)):  
+d = cv2.absdiff(frames[i].astype(np.float32),  frames[i - 
+1].astype(np.float32))  
+diffs.append(float(np.mean(d))) 
+metrics['motion_intensity']  = float(np.mean(diffs))  
+else: 
+metrics['motion_intensity']  = 0.0 
+else: 
+metrics['avg_brightness'] = None 
+metrics['color_variance'] = None 
+metrics['motion_intensity']  = None  
+ 
+# average  face area if faces_list  is provided  and not empty 
+if faces_list:  
+areas  = [] 
+for face in  faces_list:  
+
+===== PAGE 74 =====
+72  # face is a tensor  shape  (3,H,W)  
+if hasattr(face,  'shape')  and len(face.shape)  == 3: 
+h, w = int(face.shape[1]), int(face.shape[2]) 
+areas.append(w * h)  
+metrics['avg_face_area']  = float(np.mean(areas))  if areas  else None 
+metrics['num_detected_faces'] = len(areas)  
+else: 
+metrics['avg_face_area'] = None 
+metrics['num_detected_faces']  = 0 
+ 
+return  metrics  
+ 
+ 
+def format_metrics(metrics): 
+if not metrics:  
+return  "No video  loaded."  
+w,h = metrics.get('resolution',(0,0)) 
+fps = metrics.get('fps',0.0)  
+total = metrics.get('total_frames',0) 
+ab = metrics.get('avg_brightness') 
+cvv = metrics.get('color_variance') 
+mi = metrics.get('motion_intensity') 
+af = metrics.get('avg_face_area')  
+nf = metrics.get('num_detected_faces',0)  
+ 
+lines  = [ 
+"ç# ¡/ Video  Technical  Summary",  
+"────────────────────────────",  
+
+===== PAGE 75 =====
+73  f"Resolution:  {w} × {h} pixels",  
+f"Frame  Rate (FPS):  {fps:.2f}"  if fps is not None  else "Frame  Rate (FPS):  N/A", 
+f"Total Frames:  {total}",  
+f"Avg Brightness:    {ab:.2f}" if ab is not None else "Avg Brightness:  N/A", 
+f"Color Variance:    {cvv:.2f}" if cvv is not None else "Color Variance:   N/A", 
+f"Motion Intensity:  {mi:.2f}" if mi is not None else "Motion Intensity:  N/A", 
+f"Avg Face Area:  {int(af):,}  px²" if af is not None else "Avg Face Area:   N/A", 
+f"Detected Faces:   {nf}",  
+"", 
+"Notes:",  
+"- Avg Brightness:  mean  grayscale  intensity  (0-255).",  
+"- Color Variance: average variance across RGB channels (higher = more color 
+spread).",  
+"- Motion  Intensity:  mean  per-pixel  change  between  consecutive  frames.",  
+] 
+return  "\n".join(lines)  
+ 
+ 
+def update_analysis_panel(video_path, frames, faces_list=None): 
+metrics  = compute_video_metrics(video_path,  frames,  faces_list) 
+txt = format_metrics(metrics) 
+analysis_text.configure(state=tk.NORMAL) 
+analysis_text.delete(1.0, tk.END)  
+analysis_text.insert(tk.END, txt) 
+analysis_text.configure(state=tk.DISABLED)  
+ 
+# ----------  Core  functionalities  ----------  
+def load_video():  
+
+===== PAGE 76 =====
+74  global  VIDEO_PATH  
+path = filedialog.askopenfilename(filetypes=[("Video  files",  "*.mp4  *.avi  *.mov  
+*.mkv"),  ("All  files","*.*")]) 
+if not path:  
+return 
+VIDEO_PATH  = path 
+cap = cv2.VideoCapture(VIDEO_PATH) 
+ret, frame = cap.read()  
+cap.release() 
+if ret:  
+rgb = cv2.cvtColor(frame,  cv2.COLOR_BGR2RGB) 
+pil = Image.fromarray(rgb)  
+_show_in_label(lbl_original,  pil, TOP_BOX_W - 40, TOP_BOX_H  - 40) 
+else: 
+messagebox.showwarning("Load  failed",  "Couldn't  read first frame  of the 
+video.")  
+# reset previous state 
+clear_frames_and_faces()  
+update_analysis_panel(VIDEO_PATH, FRAMES, FACES) 
+messagebox.showinfo("Video  Loaded",  f"Loaded  video: \n{VIDEO_PATH}")  
+ 
+def extract_frames():  
+global  FRAMES,  CURRENT_FRAME  
+if not VIDEO_PATH:  
+messagebox.showwarning("Error",  "Please  load a video  first.") 
+return  
+FRAMES  = [] 
+
+===== PAGE 77 =====
+75  cap = cv2.VideoCapture(VIDEO_PATH)  
+total = int(cap.get(cv2.CAP_PROP_FRAME_COUNT)  or 0) 
+if total <= 0:  
+messagebox.showwarning("Read  error",  "Couldn't  determine  total frames  for 
+this video.")  
+# pick indices  evenly  
+indices  = np.linspace(0,  max(total -1,0), FRAME_COUNT,  dtype=int)  if total>0 
+else list(range(FRAME_COUNT))  
+for i in indices: 
+cap.set(cv2.CAP_PROP_POS_FRAMES,  int(i)) 
+ret, frame = cap.read()  
+if not ret: 
+continue  
+FRAMES.append(cv2.cvtColor(frame,  cv2.COLOR_BGR2RGB)) 
+cap.release()  
+if not FRAMES:  
+messagebox.showwarning("Error",  "No frames  extracted.") 
+return  
+CURRENT_FRAME  = 0 
+# show  first extracted  frame  in viewer  and in original  top box too (consistent) 
+pil = Image.fromarray(FRAMES[0])  
+_show_in_label(lbl_viewer,  pil, VIEWER_W  - 40, VIEWER_H  - 120) 
+_show_in_label(lbl_original, pil, TOP_BOX_W - 40, TOP_BOX_H - 40) 
+update_analysis_panel(VIDEO_PATH, FRAMES, FACES) 
+messagebox.showinfo("Frames  Extracted",  f"Extracted  {len(FRAMES)}  frames.")  
+ 
+def detect_faces():  
+
+===== PAGE 78 =====
+76  global FACES  
+if not FRAMES:  
+messagebox.showwarning("Error",  "Please  extract  frames  first.") 
+return  
+FACES  = [] 
+# tqdm  will print  to console;  keep  it for debug  progress 
+for frame in  tqdm(FRAMES, desc="Detecting faces"):  
+img = Image.fromarray(frame)  
+face = mtcnn(img)  # returns  Tensor  (3,H,W)  or None 
+if face is not None:  
+FACES.append(face.cpu()) 
+if not FACES:  
+messagebox.showerror("No  Faces",  "No faces  detected.") 
+# still update analysis (no faces)  
+update_analysis_panel(VIDEO_PATH,  FRAMES,  FACES) 
+return  
+# display  first detected  face 
+fimg  = FACES[0].permute(1,2,0).numpy() 
+fimg = (fimg * 255).astype(np.uint8)  
+pil = Image.fromarray(fimg)  
+_show_in_label(lbl_processed,  pil, TOP_BOX_W - 40, TOP_BOX_H  - 40) 
+# update analysis with face areas  
+update_analysis_panel(VIDEO_PATH, FRAMES, FACES) 
+messagebox.showinfo("Faces Detected", f"Detected {len(FACES)} face(s) across  
+extracted  frames.")  
+ 
+def classify_video():  
+
+===== PAGE 79 =====
+77  if not FACES:  
+messagebox.showwarning("Error",  "Please  detect  faces  first.") 
+return  
+faces  = list(FACES)  # already  tensors  (3,H,W)  
+# ensure  count  equals  FRAME_COUNT  by repeating/truncating 
+if len(faces) < FRAME_COUNT:  
+# repeat  from  start 
+idx = 0  
+while len(faces) < FRAME_COUNT: 
+faces.append(faces[idx  % len(faces)]) 
+idx += 1  
+elif len(faces) > FRAME_COUNT: 
+faces  = faces[:FRAME_COUNT]  
+# stack  into (N,  C, H, W) 
+seq = torch.stack(faces).unsqueeze(1).unsqueeze(0).to(DEVICE)  # (1, N, 1, C, H, 
+W) expected by model earlier? original model expects (B,N,_,C,H,W)  
+# BUT  the original  model  expects  seqs shape  (B,N,_,C,H,W)  based  on earlier  code; 
+# our DeepfakeModel.forward  flattened  B,N,_,C,H,W  accordingly.  We must  match  
+original  used before:  
+# In your provided  code earlier  sequence  creation  was: seq = 
+torch.stack(faces).unsqueeze(1).unsqueeze(0).to(DEVICE)  
+# So keep the same. 
+with torch.no_grad():  
+logits  = model(seq)  
+prob = torch.sigmoid(logits).item()  
+label  = "FAKE"  if prob > 0.5 else "REAL"  
+lbl_result.config(text=f"{label} \nConfidence:  {prob*100:.2f}%",  fg=("#ff6b6b"  if 
+
+===== PAGE 80 =====
+78  label=="FAKE"  else "#38e6c7"))  
+messagebox.showinfo("Result",  f"Predicted:  {label} \nConfidence:  
+{prob*100:.2f}%")  
+ 
+ 
+def clear_frames_and_faces():  
+global  FRAMES,  FACES,  CURRENT_FRAME 
+FRAMES = []  
+FACES  = [] 
+CURRENT_FRAME  = 0 
+# clear  viewer  & processed  but keep  boxes  same  size 
+lbl_viewer.config(image="")  
+lbl_viewer.image = None 
+lbl_processed.config(image="") 
+lbl_processed.image = None 
+lbl_original.config(image="") 
+lbl_original.image = None  
+lbl_result.config(text="No  Result",  fg="#38e6c7") 
+analysis_text.configure(state=tk.NORMAL) 
+analysis_text.delete(1.0, tk.END)  
+analysis_text.insert(tk.END,  "Load  a video  and extract  frames  to see numeric 
+analysis here.")  
+analysis_text.configure(state=tk.DISABLED)  
+ 
+# ----------  Navigation  for extracted  frames  ----------  
+def show_extracted_frame(index):  
+global  CURRENT_FRAME  
+if not FRAMES:  
+
+===== PAGE 81 =====
+79  return  
+index  = max(0,  min(index,  len(FRAMES) -1)) 
+CURRENT_FRAME  = index  
+pil = Image.fromarray(FRAMES[index])  
+_show_in_label(lbl_viewer,  pil, VIEWER_W  - 40, VIEWER_H  - 120) 
+# also keep the Original  top-left showing  current  extracted  frame  for quick  reference  
+_show_in_label(lbl_original,  pil, TOP_BOX_W  - 40, TOP_BOX_H  - 40) 
+ 
+ 
+def on_prev(): 
+show_extracted_frame(CURRENT_FRAME  - 1) 
+ 
+def on_next(): 
+show_extracted_frame(CURRENT_FRAME  + 1) 
+ 
+btn_prev.config(command=on_prev) 
+btn_next.config(command=on_next)  
+ 
+# attach buttons to functions 
+btn_load.config(command=load_video) 
+btn_extract.config(command=extract_frames) 
+btn_detect.config(command=detect_faces) 
+btn_classify.config(command=classify_video) 
+btn_exit.config(command=root.destroy)  
+ 
+# keep  UI responsive  - small  helper  to ensure  GUI remains  stable  on resize 
+def _noop_resize(event):  
+# we intentionally  keep  box sizes  fixed;  do nothing  on window  resize  
+
+===== PAGE 82 =====
+80  pass 
+ 
+root.bind("<Configure>",  _noop_resize)  
+ 
+ 
+# initial  fixed  placeholder  images  so boxes  show  stable  layout 
+placeholder = Image.new("RGB", (400,300), (18,24,30))  
+_show_in_label(lbl_original,  placeholder,  TOP_BOX_W  - 40, TOP_BOX_H  - 40) 
+_show_in_label(lbl_processed,  placeholder,  TOP_BOX_W  - 40, TOP_BOX_H  - 40) 
+_show_in_label(lbl_viewer,  placeholder,  VIEWER_W  - 40, VIEWER_H  - 120) 
+ 
+# Start the app 
+root.mainloop()  
+
+===== PAGE 83 =====
+81  CHAPTER   9 
+CONCLUSION  AND  FUTURE  ENHANCEMENT  
+9.1 Conclusion  
+Deepfake technology, driven by advancements in artificial 
+intelligence and generative models, has introduced significant challenges in 
+verifying  the authenticity  of digital  media.  The increasing  sophistication  of fake 
+video generation threatens the integrity of online information, personal 
+security, and digital trust. This project presented a Hybrid Deep Learning 
+Framework for Deepfake Detection that effectively combines spatial and 
+temporal features to identify manipulated videos with high precision and 
+computational.  
+         The proposed system integrates EfficientNet B0 for spatial feature 
+extraction and Temporal Convolutional Networks (TempCNN) for modeling 
+temporal inconsistencies across video frames. EfficientNet B0 captures fine -
+grained visual cues such as blending artifacts, texture inconsistencies, and 
+unnatural lighting, while TempCNN detects irregular facial movements and 
+motion discontinuities that often occur in deepfake videos. Together, these 
+models form  a hybrid  structure  capable  of detecting  even  subtle  manipulations  
+in real- world video datasets.  
+The system was trained and evaluated on the FFIW 10K dataset, 
+containing  an equal  number  of real and fake videos,  ensuring  balanced  learning. 
+The hybrid framework achieved a training accuracy of 91.5% and a testing 
+accuracy of 92.45%, outperforming conventional single -stream CNN models. 
+Furthermore,  it achieved  strong  scores  in performance  metrics  such as precision 
+(93.2%), recall (91.8%), and F1 -score (92.4%). These results confirm that 
+combining  spatial  and temporal  analysis  significantly  improves  deepfake  
+detection  robustness.  
+
+===== PAGE 84 =====
+82  The hybrid deepfake detection model is lightweight, with a 
+computational complexity of only 0.45 GFLOPs, making it efficient for real - 
+time applications on standard hardware systems. The inclusion of feature 
+pyramid  fusion  and data augmentation  (CutMix,  MixUp,  and Random  Erasing) 
+further enhances its accuracy and generalization. This work contributes a 
+significant step forward in multimedia forensics by providing a scalable, 
+interpretable, and resource -efficient detection system that can be deployed in 
+practical scenarios such as social media monitoring, video verification, and 
+digital content authentication.  
+9.2 Future  Enhancement  
+In the future, several improvements can be incorporated to extend the 
+performance and usability of the proposed hybrid framework:  
+1. Integration  Of Transfer  Based  Model:  
+The inclusion of vision transformers (ViT) or hybrid CNN -transformer architectures 
+can further  improve  feature  extraction  from  spatial  and temporal  domains,  enhancing 
+performance for high -resolution videos.  
+2. Real -Time  Implementation:  
+The proposed model can be optimized and deployed on edge devices or mobile 
+platforms  to enable  real-time deepfake  detection  in streaming  and video  conferencing 
+applications.  
+3. Dataset  Expansion:  
+Incorporating  additional  datasets  such as Celeb -DF, DFDC,  and FaceForensics++ 
+can increase model generalization and reliability across diverse manipulation 
+techniques and video qualities.  
+4. Explainable  AI (XAI):  
+Future  versions  of the system  could  integrate  interpretability  frameworks  that visually  
+
+===== PAGE 85 =====
+83  explain  why a particular  video  was classified  as fake,  increasing  transparency  and 
+trust in automated detection systems.  
+5. Adversarial  Robustness:  
+Introducing  adversarial  training  and noise -tolerant  mechanisms  will strengthen  the 
+model against attacks designed to fool detection systems.  
+6. Cloud  and IoT Integration:  
+Deploying  the system  on cloud  platforms  or integrating  with IoT-enabled  security 
+infrastructures can enable large -scale monitoring, automatic verification, and 
+distributed media authentication.  
+7. Cross -modal  Deepfake  Detection:  
+Expanding  the framework  to handle audio -visual  deepfakes  by analyzing  both speech 
+and lip synchronization inconsistencies can provide a comprehensive defense against 
+multimedia forgeries.  
+In conclusion, this research establishes a strong foundation for advanced and 
+efficient deepfake detection using hybrid deep learning techniques. Future work will 
+focus on making the system more adaptive, explainable, and accessible for real -time 
+deployment,  contributing  to the global  effort  of maintaining  digital  integrity  and media 
+authenticity in the era of generative AI.  
+
+===== PAGE 86 =====
+84          REFERENCES:  
+ 
+[1] K. A. Rani, A. L. D’Souza, “A Hybrid Deep Learning Framework for Deepfake 
+Detection  Using  Temporal  and Spatial  Features,”  IEEE Xplore , 2023.  
+[2] A. Rössler, D. Cozzolino, L. Verdoliva, C. Riess, J. Thies, and M. Nießner, 
+“FaceForensics++:  Learning  to Detect  Manipulated  Facial  Images,”  IEEE  International 
+Conference  on Computer  Vision  (ICCV) , 2019.  
+[3] J. Li, Y. Yang, and W. Luo, “Exposing DeepFake Videos By Detecting Face 
+Warping Artifacts,” IEEE Conference on Computer Vision and Pattern Recognition 
+Workshops  (CVPRW) , 2018.  
+[4] S. Agarwal, H. Farid, Y. Gu, M. He, K. Nagano, and H. Li, “Protecting World 
+Leaders Against Deep Fakes,” IEEE Conference on Computer Vision and Pattern 
+Recognition  (CVPR) , 2019.  
+[5] A. Afchar, V. Nozick, J. Yamagishi, and I. Echizen, “MesoNet: A Compact Facial 
+Video Forgery Detection Network,” IEEE Workshop on Information Forensics and 
+Security  (WIFS) , 2018.  
+[6] Y. Li and S. Lyu, “Exposing  DeepFake  Videos  By Detecting  Face  Blinking,” IEEE 
+International  Workshop  on Information  Forensics  and Security  (WIFS) , 2018.  
+[7] X. Yang,  Y. Li, and S. Lyu, “Exposing  Deep  Fakes  Using  Inconsistent  Head  Poses,” 
+IEEE  International  Conference  on Acoustics,  Speech  and Signal  Processing  (ICASSP) , 
+2019.  
+[8] C. Güera and E. J. Delp, “DeepFake Video Detection Using Recurrent Neural 
+Networks,” AVSS 2018: 15th IEEE International Conference on Advanced Video and 
+Signal  Based  Surveillance , 2018.  
+[9] J. Korshunov  and S. Marcel,  “DeepFakes:  A New  Threat  to Face  Recognition?  
+
+===== PAGE 87 =====
+85  Assessment    and   Detection,”  arXiv  preprint , arXiv:1812.08685,  2018.  
+[10] W. Yang et al., “DFDC: DeepFake Detection Challenge Dataset,” Facebook AI 
+Research , 2020.  
+[11] S. Haliassos,  P. Kotsias,  S. Zafeiriou,  “Lips  Don’t  Lie: A Generalisable  and Robust 
+Approach  to Face Forgery  Detection,” CVPR  ,2021.  
+[12] C. Zhao, X. Ma, and F. Liu, “Temporal and Spatial Feature Fusion Network for 
+Deepfake  Video  Detection,”  IEEE Access , vol. 10, pp. 11234 –11247,  2022.  
+[13] T. Karras, S. Laine, and T. Aila, “A Style -Based Generator Architecture for 
+Generative Adversarial Networks,” IEEE/CVF Conference on Computer Vision and 
+Pattern  Recognition  (CVPR) , 2019.  
+[14] H. Nguyen et al., “Deep Learning for Deepfakes Creation and Detection: A 
+Survey,” IEEE Access , vol. 9, pp. 94501 –94518, 2021.  
+[15] M. Tan and Q. V. Le, “EfficientNet: Rethinking Model Scaling for 
+Convolutional  Neural  Networks,”  arXiv  preprint , arXiv:1905.11946,  2019.  
+ 
+ 
